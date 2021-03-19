@@ -12,6 +12,8 @@ io.on('connection', socket => {
   })
   
   socket.on("new-player", ()=>{
+    console.log("new player ")
+    console.log(lastId)
     socket.emit("new-player", lastId ? lastId+1 : 0);
     lastId = lastId ? lastId+1 : 0;
   })
