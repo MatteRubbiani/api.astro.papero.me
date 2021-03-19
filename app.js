@@ -12,8 +12,7 @@ io.on('connection', socket => {
   })
 
   socket.on("new-player", () => {
-    console.log("new player ")
-    console.log(lastId)
+    console.log("new player: ", lastId)
     lastId = lastId ? lastId + 1 : 0;
     socket.emit("new-player", lastId);
     socket.broadcast.emit("new-player", lastId)
@@ -21,10 +20,9 @@ io.on('connection', socket => {
   })
 
   socket.on("get-game", () => {
-    console.log("getting game")
+    console.log("getting game: ", lastId)
     socket.emit("get-game", lastId ? lastId + 1 : 0);
   })
 })
 
 http.listen(3003)
-console.log("running")
