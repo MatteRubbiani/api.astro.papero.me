@@ -11,6 +11,10 @@ io.on('connection', socket => {
     socket.broadcast.emit("move", data)
   })
 
+  socket.on("shoot", data => {
+    socket.broadcast.emit("shoot", data)
+  })
+
   socket.on("new-player", () => {
     console.log("new player: ", lastId)
     lastId = lastId + 1
