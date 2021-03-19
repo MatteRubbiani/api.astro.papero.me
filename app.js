@@ -19,6 +19,7 @@ io.on('connection', socket => {
   })
 
   socket.on("get-game", ()=>{
+    console.log("getting game")
     return lastId ? lastId+1 : 0;
   })
 })
