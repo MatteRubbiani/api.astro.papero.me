@@ -14,8 +14,8 @@ io.on('connection', socket => {
   socket.on("new-player", () => {
     console.log("new player: ", lastId)
     lastId = lastId + 1
-    socket.emit("new-player", lastId)
-    socket.broadcast.emit("new-player", lastId)
+    socket.emit("new-player", lastId - 1)
+    socket.broadcast.emit("new-player", lastId - 1)
 
   })
 
