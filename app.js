@@ -6,7 +6,7 @@ const io = require('socket.io')(http);
 
 let lastId = null;
 io.on('connection', socket => {
-  console.log("connecteeed")
+
   socket.on("move", data => {
     socket.broadcast.emit("move", data)
   })
@@ -14,14 +14,15 @@ io.on('connection', socket => {
   socket.on("new-player", () => {
     console.log("new player ")
     console.log(lastId)
-    socket.emit("new-player", lastId ? lastId + 1 : 0);
     lastId = lastId ? lastId + 1 : 0;
+    socket.emit("new-player", lastId);
+    socket.broadcast.emit("new-player", lastId)
+
   })
 
   socket.on("get-game", () => {
     console.log("getting game")
     socket.emit("get-game", lastId ? lastId + 1 : 0);
-    socket.broadcast.emit("get-game", lastId ? lastId + 1 : 0)
   })
 })
 
