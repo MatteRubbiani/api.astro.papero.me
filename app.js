@@ -7,7 +7,7 @@ const io = require('socket.io')(http);
 io.on('connection', socket => {
   console.log("connecteeed")
   socket.on("move", data => {
-    io.emit("move", data)
+    socket.broadcast.emit("move", data)
   })
 })
 
