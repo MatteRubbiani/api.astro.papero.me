@@ -10,17 +10,18 @@ io.on('connection', socket => {
   socket.on("move", data => {
     socket.broadcast.emit("move", data)
   })
-  
-  socket.on("new-player", ()=>{
+
+  socket.on("new-player", () => {
     console.log("new player ")
     console.log(lastId)
-    socket.emit("new-player", lastId ? lastId+1 : 0);
-    lastId = lastId ? lastId+1 : 0;
+    socket.emit("new-player", lastId ? lastId + 1 : 0);
+    lastId = lastId ? lastId + 1 : 0;
   })
 
-  socket.on("get-game", ()=>{
+  socket.on("get-game", () => {
     console.log("getting game")
-    return lastId ? lastId+1 : 0;
+    socket.emit("get-game", lastId ? lastId + 1 : 0);
+    socket.broadcast.emit("get-game", lastId ? lastId + 1 : 0)
   })
 })
 
