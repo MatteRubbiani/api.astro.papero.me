@@ -30,7 +30,7 @@ io.on('connection', socket => {
     socket.emit(Endpoints.STATUS, game.status)
     switch (game.status){
       case 0:
-        socket.emit(Endpoints.LOBBY_MODIFIED, game.getGame())
+        socket.emit(Endpoints.LOBBY_MODIFIED, game.getGame(userId))
     }
   })
 
