@@ -8,7 +8,7 @@ const GameSchema = new mongoose.Schema({
         required: true
     },
     adminUserId: {
-        type: Number,
+        type: String,
         required: true
     },
     status: {
