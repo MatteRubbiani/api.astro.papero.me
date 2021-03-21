@@ -21,11 +21,9 @@ io.on('connection', socket => {
     let user = new ActiveUsersManager(userId, gameId, socket.id)
     await user.saveToDb()
     let game = await ActiveGames.getActiveGameById(gameId)
-    console.log("found this game: ", game)
     if (!game) {
       game = await ActiveGames.createActiveGame(userId, gameId)
       await game.saveToDb()
-      console.log("created new game")
     }
     socket.emit(Endpoints.STATUS, game.status)
     switch (game.status){
@@ -35,7 +33,13 @@ io.on('connection', socket => {
   })
 
   io.on(Endpoints.JOIN_GAME, async () => {
-
+    let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+    if (!user) return null
+    let game = await ActiveGames.getActiveGameById(user.gameId)
+    if (!game) return null
+    game.addPlayer(user.userId)
+    sendLobbyChangedToPlayers(game)
+    await game.saveToDb()
   })
 
 
@@ -61,5 +65,25 @@ io.on('connection', socket => {
     socket.emit("get-game", lastId)
   })
 })
+
+async function sendLobbyChangedToPlayers(game){
+  let gameUsers = await ActiveUsersManager.getUsersByGameId(game.id)
+  for (let i=0; i<gameUsers.length; i++){
+    let player = gameUsers[i]
+    let s = io.sockets.connected[player.sessionId]
+    if (s) {
+      s.emit(Endpoints.LOBBY_MODIFIED, game.get(player.userId))
+    }
+  }
+}
+
+async function sendGameToPlayers(game){
+  let gameUsers = await  ActiveUsersManager.getUsersByGameId(game.id)
+  for (let i=0; i<gameUsers.length; i++){
+    let player = gameUsers[i]
+    sendToPlayerAndCheckStatus(player, game, Endpoints.GAME_MODIFIED, game.getGame(player.userId))
+  }
+}
+
 
 http.listen(3003)

@@ -58,6 +58,28 @@ class ActiveGames{
         return null
     }
 
+    getFirstAvailableColor(){
+        for (let i=0; i<30; i++){
+            let free = true
+            for (let j=0; j<this.players.length; j++){
+                if (this.players[j].color === i) free = false
+            }
+            if (free) return i
+        }
+    }
+
+    addPlayer(userId){
+        if (this.getPlayerById(userId)) return null
+        let p = {
+            id: userId,
+            localId: Date.now(),
+            online: true,
+            color: this.getFirstAvailableColor(),
+            points: 0
+        }
+        this.players.push(p)
+    }
+
     async saveToDb(){
         let d = {
             id: this.id,
