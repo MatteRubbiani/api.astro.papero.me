@@ -78,7 +78,7 @@ async function sendLobbyChangedToPlayers(game){
     let player = gameUsers[i]
     let s = io.sockets.connected[player.sessionId]
     if (s) {
-      s.emit(Endpoints.LOBBY_MODIFIED, game.get(player.userId))
+      s.emit(Endpoints.LOBBY_MODIFIED, game.getGame(player.userId))
     }
   }
 }
