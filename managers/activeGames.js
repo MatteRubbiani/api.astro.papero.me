@@ -89,7 +89,7 @@ class ActiveGames{
         return g
     }
 
-    async static createActiveGame(userId, gameId){
+    static async createActiveGame(userId, gameId){
         const dict = {
             id : gameId,
             status : 0,
