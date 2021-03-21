@@ -3,7 +3,7 @@ const ActiveUsersManager = require("./activeUsers")
 const GameModel = require("../models/Game")
 
 class ActiveGamePlayers{
-    async constructor(playerDict) {
+    constructor(playerDict) {
         this.id = playerDict.id
         this.online = playerDict.online
         this.color = playerDict.color
@@ -20,7 +20,7 @@ class ActiveGamePlayers{
 }
 
 class ActiveGames{
-    async constructor(gameDict) {
+    constructor(gameDict) {
         this.id = gameDict.id
         this.adminUserId = gameDict.adminUserId
         this.status = gameDict.status
@@ -31,7 +31,7 @@ class ActiveGames{
         this.createdAt = gameDict.createdAt
         this.players = []
         for (let i=0; i<gameDict.players.length; i++){
-            let p = await ActiveGamePlayers(gameDict.players[i])
+            let p = new ActiveGamePlayers(gameDict.players[i])
             this.players.push(p)
         }
     }
