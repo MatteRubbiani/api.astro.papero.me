@@ -108,7 +108,7 @@ class ActiveGames{
                 }
             ]
         }
-        let g = await ActiveGames(dict)
+        let g = await new ActiveGames(dict)
         return g
     }
 }

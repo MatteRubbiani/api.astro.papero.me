@@ -11,6 +11,7 @@ const io = require('socket.io')(http);
 
 let lastId = 0;
 io.on('connection', socket => {
+
   socket.on(Endpoints.CONNECT_TO_GAME, async data => {
     let cookies = socket.handshake.headers.cookie
     cookies = cookie.parse(cookies)
@@ -27,6 +28,12 @@ io.on('connection', socket => {
         socket.emit(Endpoints.LOBBY_MODIFIED, game.getGame())
     }
   })
+
+  io.on(Endpoints.JOIN_GAME, async () => {
+
+  })
+
+
 
   socket.on("move", data => {
     socket.broadcast.emit("move", data)
