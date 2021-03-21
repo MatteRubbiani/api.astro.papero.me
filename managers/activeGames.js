@@ -50,7 +50,7 @@ class ActiveGames{
                 let g = {
                     players: players,
                     admin: this.getPlayerById(this.adminUserId).color,
-                    currentPlayer: this.getPlayerById(userId).color,
+                    currentPlayer: this.getPlayerById(userId) ? this.getPlayerById(userId).color : null,
                     settings: settings
                 }
                 return g
