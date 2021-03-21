@@ -38,6 +38,7 @@ io.on('connection', socket => {
   })
 
   io.on(Endpoints.JOIN_GAME, async () => {
+    console.log("wow, giac aveva raginoe")
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
