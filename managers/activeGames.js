@@ -42,7 +42,7 @@ class ActiveGames{
                 this.players.forEach(p => { players.push(p) })
                 let g = {
                     players: players,
-                    admin: this.getPlayerById(this.adminUserId).color,
+                    admin: this.getPlayerById(this.adminUserId).localId,
                     currentPlayer: this.getPlayerById(userId) ? this.getPlayerById(userId).localId : null,
                     settings: settings
                 }
@@ -53,7 +53,7 @@ class ActiveGames{
     getPlayerById(userId){
         for (let i=0; i<this.players.length; i++){
             let p = this.players[i]
-            if (p.userId === userId) return p
+            if (p.id === userId) return p
         }
         return null
     }
