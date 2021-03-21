@@ -38,8 +38,7 @@ io.on('connection', socket => {
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
     game.addPlayer(user.userId)
-    sendLobbyChangedToPlayers(game)
-    await game.saveToDb()
+    await Promise.all(sendLobbyChangedToPlayers(game), game.saveToDb())
   })
 
 
