@@ -14,7 +14,12 @@ io.on('connection', socket => {
 
   socket.on(Endpoints.CONNECT_TO_GAME, async data => {
     let cookies = socket.handshake.headers.cookie
-    cookies = cookie.parse(cookies)
+    try {
+      cookies = cookie.parse(cookies)
+    }catch (e){
+      console.log(e)
+      return null
+    }
     let userId = cookies["userId"]
     let gameId = data["gameId"].toLowerCase()
     if (!userId || !gameId) return null
