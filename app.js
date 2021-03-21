@@ -21,7 +21,10 @@ io.on('connection', socket => {
     let user = new ActiveUsersManager(userId, gameId, socket.id)
     await user.saveToDb()
     let game = await ActiveGames.getActiveGameById(gameId)
-    if (!game) game = await ActiveGames.createActiveGame(userId, gameId)
+    if (!game) {
+      game = await ActiveGames.createActiveGame(userId, gameId)
+      game.saveToDb()
+    }
     socket.emit(Endpoints.STATUS, game.status)
     switch (game.status){
       case 0:
