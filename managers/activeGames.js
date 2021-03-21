@@ -8,14 +8,7 @@ class ActiveGamePlayers{
         this.online = playerDict.online
         this.color = playerDict.color
         this.points = playerDict.points
-    }
-
-    toJson(){
-        return {
-            online : this.online,
-            color : this.color,
-            points : this.points
-        }
+        this.localId = playerDict.localId
     }
 }
 
@@ -50,7 +43,7 @@ class ActiveGames{
                 let g = {
                     players: players,
                     admin: this.getPlayerById(this.adminUserId).color,
-                    currentPlayer: this.getPlayerById(userId) ? this.getPlayerById(userId).color : null,
+                    currentPlayer: this.getPlayerById(userId) ? this.getPlayerById(userId).localId : null,
                     settings: settings
                 }
                 return g
@@ -102,6 +95,7 @@ class ActiveGames{
             players: [
                 {
                     id: userId,
+                    localId: 0,
                     online: true,
                     color: 0,
                     points: 0
