@@ -41,7 +41,10 @@ class ActiveGames{
                 let players = []
                 this.players.forEach(p => { players.push(
                     {
-                        //togli id
+                        online : this.online,
+                        color : this.color,
+                        points : this.points,
+                        localId : this.localId
                     }
                     )
                 })
