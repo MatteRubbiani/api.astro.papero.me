@@ -104,6 +104,8 @@ class ActiveGames{
         return busy
     }
 
+    changeSettings
+
     async saveToDb(){
         let d = {
             id: this.id,

@@ -60,6 +60,17 @@ io.on('connection', socket => {
       if (success) await Promise.all([sendLobbyChangedToPlayers(game), game.savetoDb()])
     })
 
+  socket.on(Endpoints.SET_ANGULAR_VELOCITY, async data => {
+    let setting = parseInt(data)
+    let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+    if (!user) return null
+    let game = await ActiveGames.getActiveGameById(user.gameId)
+    if (!game) return null
+    if (user.userId !== game.adminUserId) return null
+    game.angularVelocity = setting
+    await Promise.all([sendLobbyChangedToPlayers(game), game.savetoDb()])
+  })
+
 
 
   socket.on("move", data => {
