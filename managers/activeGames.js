@@ -93,7 +93,14 @@ class ActiveGames{
         for (let i=0; i<this.players.length; i++){
             if (this.players[i].color === color) busy = true
         }
-        if (!busy) this.getPlayerById(userId).color = color
+        if (!busy) {
+            for (let i=0; i<this.players.length; i++){
+                let p = this.players[i]
+                if (p.userId === userId){
+                    p.color = color
+                }
+            }
+        }
         return busy
     }
 
