@@ -71,7 +71,7 @@ io.on('connection', socket => {
     if (user.userId !== game.adminUserId) return null
     game.angularVelocity = setting
     await sendLobbyChangedToPlayers(game)
-    await game.savetoDb()
+    await game.saveToDb()
   })
 
   socket.on(Endpoints.SET_RELOADING_VELOCITY, async data => {
@@ -83,7 +83,7 @@ io.on('connection', socket => {
     if (user.userId !== game.adminUserId) return null
     game.reloadingVelocity = setting
     await sendLobbyChangedToPlayers(game)
-    await game.savetoDb()
+    await game.saveToDb()
   })
 
   socket.on(Endpoints.SET_VELOCITY, async data => {
@@ -95,7 +95,7 @@ io.on('connection', socket => {
     if (user.userId !== game.adminUserId) return null
     game.velocity = setting
     await sendLobbyChangedToPlayers(game)
-    await game.savetoDb()
+    await game.saveToDb()
   })
 
 
