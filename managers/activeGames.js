@@ -96,7 +96,7 @@ class ActiveGames{
         if (!busy) {
             for (let i=0; i<this.players.length; i++){
                 let p = this.players[i]
-                if (p.userId === userId){
+                if (p.id === userId){
                     p.color = color
                 }
             }
