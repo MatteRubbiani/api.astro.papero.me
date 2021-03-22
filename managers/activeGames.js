@@ -57,6 +57,10 @@ class ActiveGames{
                     settings: settings
                 }
                 return g
+            case 1:
+                return {
+                    status: 1
+                }
         }
     }
 
@@ -107,6 +111,10 @@ class ActiveGames{
     }
 
     changeSettings
+
+    startGame(){
+        this.status = 1
+    }
 
     async saveToDb(){
         let d = {

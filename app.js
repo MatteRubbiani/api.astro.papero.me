@@ -122,6 +122,15 @@ io.on('connection', socket => {
     await game.saveToDb()
   })
 
+  socket.on(Endpoints.START_GAME, async () => {
+    let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+    if (!user) return null
+    let game = await ActiveGames.getActiveGameById(user.gameId)
+    if (!game) return null
+    if (user.userId !== game.adminUserId) return null
+    sendGameToPlayersInGame(game, Endpoints.START_GAME)
+  })
+
 
 
 
@@ -146,6 +155,16 @@ io.on('connection', socket => {
     socket.emit("get-game", lastId)
   })
 })
+
+async function sendGameToPlayersInGame(game, endpoint){
+  let gameUsers = await ActiveUsersManager.getUsersByGameId(game.id)
+  for (let i=0; i<gameUsers.length; i++){
+    let player = gameUsers[i]
+    let s = io.sockets.connected[player.sessionId]
+    if (s) {
+      s.emit(endpoint, game.getGame(player.userId))
+    }
+}
 
 async function sendLobbyChangedToPlayers(game){
   let gameUsers = await ActiveUsersManager.getUsersByGameId(game.id)
