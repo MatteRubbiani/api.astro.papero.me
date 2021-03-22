@@ -59,7 +59,7 @@ io.on('connection', socket => {
       console.log(success)
 
       await sendLobbyChangedToPlayers(game)
-      await game.savetoDb()
+      await game.saveToDb()
     })
 
   socket.on(Endpoints.SET_ANGULAR_VELOCITY, async data => {
