@@ -8,6 +8,7 @@ Endpoints = {
     SET_VELOCITY: "set-velocity", //number -> lobbyModified a tutti
     SET_ANGULAR_VELOCITY: "set-angular-velocity", //number -> lobbyModified a tutti
     SET_RELOADING_VELOCITY: "set-reloading-velocity", //number -> lobbyModified a tutti
+    SET_BULLET_VELOCITY: "set-bullet-velocity", //number -> lobbyModified a tutti
     START_GAME: "start-game",
 }
 
