@@ -57,7 +57,9 @@ io.on('connection', socket => {
       if (!game) return null
       let success = game.changePlayerColor(user.userId, color)
       console.log(success)
-      if (success) await Promise.all([sendLobbyChangedToPlayers(game), game.savetoDb()])
+
+      await sendLobbyChangedToPlayers(game)
+      await game.savetoDb()
     })
 
   socket.on(Endpoints.SET_ANGULAR_VELOCITY, async data => {
@@ -68,7 +70,8 @@ io.on('connection', socket => {
     if (!game) return null
     if (user.userId !== game.adminUserId) return null
     game.angularVelocity = setting
-    await Promise.all([sendLobbyChangedToPlayers(game), game.savetoDb()])
+    await sendLobbyChangedToPlayers(game)
+    await game.savetoDb()
   })
 
 
