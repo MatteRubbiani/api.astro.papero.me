@@ -97,6 +97,18 @@ io.on('connection', socket => {
     await sendLobbyChangedToPlayers(game)
     await game.saveToDb()
   })
+  socket.on(Endpoints.SET_TOTAL_TURNS, async data => {
+    let setting = parseInt(data)
+    let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+    if (!user) return null
+    let game = await ActiveGames.getActiveGameById(user.gameId)
+    if (!game) return null
+    if (user.userId !== game.adminUserId) return null
+    game.totalTurns = setting
+    await sendLobbyChangedToPlayers(game)
+    await game.saveToDb()
+  })
+
 
 
 
