@@ -128,7 +128,9 @@ io.on('connection', socket => {
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
     if (user.userId !== game.adminUserId) return null
+    game.startGame()
     await sendGameToPlayersInGame(game, Endpoints.STATUS)
+    await game.saveToDb()
   })
 
 
