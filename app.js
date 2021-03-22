@@ -56,6 +56,7 @@ io.on('connection', socket => {
       let game = await ActiveGames.getActiveGameById(user.gameId)
       if (!game) return null
       let success = game.changePlayerColor(user.userId, color)
+      console.log(success)
       if (success) await Promise.all([sendLobbyChangedToPlayers(game), game.savetoDb()])
     })
 
