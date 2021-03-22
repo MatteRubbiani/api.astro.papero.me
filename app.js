@@ -38,7 +38,6 @@ io.on('connection', socket => {
   })
 
   socket.on(Endpoints.JOIN_GAME, async () => {
-    console.log("wow, giac aveva raginoe")
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
@@ -47,6 +46,16 @@ io.on('connection', socket => {
     await sendLobbyChangedToPlayers(game)
     await game.saveToDb()
   })
+
+    socket.on(Endpoints.CHANGE_COLOR, async data =>{
+      let color = parseInt(data["color"])
+      let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+      if (!user) return null
+      let game = await ActiveGames.getActiveGameById(user.gameId)
+      if (!game) return null
+      let success = game.changePlayerColor(user.userId, color)
+      if (success) await Promise.all([sendLobbyChangedToPlayers(game), game.savetoDb()])
+    })
 
 
 
@@ -83,13 +92,6 @@ async function sendLobbyChangedToPlayers(game){
   }
 }
 
-async function sendGameToPlayers(game){
-  let gameUsers = await  ActiveUsersManager.getUsersByGameId(game.id)
-  for (let i=0; i<gameUsers.length; i++){
-    let player = gameUsers[i]
-    sendToPlayerAndCheckStatus(player, game, Endpoints.GAME_MODIFIED, game.getGame(player.userId))
-  }
-}
 
 
 http.listen(3003)

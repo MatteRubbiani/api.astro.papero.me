@@ -39,7 +39,12 @@ class ActiveGames{
                     reloadingVelocity: this.reloadingVelocity
                 }
                 let players = []
-                this.players.forEach(p => { players.push(p) })
+                this.players.forEach(p => { players.push(
+                    {
+                        //togli id
+                    }
+                    )
+                })
                 let g = {
                     players: players,
                     admin: this.getPlayerById(this.adminUserId).localId,
@@ -78,6 +83,15 @@ class ActiveGames{
             points: 0
         }
         this.players.push(p)
+    }
+
+    changePlayerColor(userId, color){
+        let busy = false
+        for (let i=0; i<this.players.length; i++){
+            if (this.players[i].color === color) busy = true
+        }
+        if (!busy) this.getPlayerById(userId).color = color
+        return busy
     }
 
     async saveToDb(){
