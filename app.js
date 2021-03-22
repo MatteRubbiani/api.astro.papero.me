@@ -48,6 +48,7 @@ io.on('connection', socket => {
   })
 
     socket.on(Endpoints.CHANGE_COLOR, async data =>{
+      console.log("changing color")
       let color = parseInt(data["color"])
       let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
       if (!user) return null
