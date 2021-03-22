@@ -4,6 +4,7 @@ let gameConfig = {
     velocity: 2,
     angularVelocity: 2,
     reloadingVelocity: 2,
+    bulletVelocity: 2
 }
 
 module.exports = gameConfig

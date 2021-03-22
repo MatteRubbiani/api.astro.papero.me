@@ -21,6 +21,7 @@ class ActiveGames{
         this.velocity = gameDict.velocity
         this.angularVelocity = gameDict.angularVelocity
         this.reloadingVelocity = gameDict.reloadingVelocity
+        this.bulletVelocity = gameDict.bulletVelocity
         this.createdAt = gameDict.createdAt
         this.players = []
         for (let i=0; i<gameDict.players.length; i++){
@@ -36,7 +37,8 @@ class ActiveGames{
                     totalTurns: this.totalTurns,
                     velocity: this.velocity,
                     angularVelocity: this.angularVelocity,
-                    reloadingVelocity: this.reloadingVelocity
+                    reloadingVelocity: this.reloadingVelocity,
+                    bulletVelocity: this.bulletVelocity
                 }
                 let players = []
                 this.players.forEach(p => { players.push(
@@ -115,6 +117,7 @@ class ActiveGames{
             velocity: this.velocity,
             angularVelocity: this.angularVelocity,
             reloadingVelocity: this.reloadingVelocity,
+            bulletVelocity: this.bulletVelocity,
             createdAt: this.createdAt,
             players: this.players
         }
@@ -139,6 +142,7 @@ class ActiveGames{
             totalTurns: gameConfig.totalTurns,
             velocity: gameConfig.velocity,
             angularVelocity: gameConfig.angularVelocity,
+            bulletVelocity: gameConfig.bulletVelocity,
             reloadingVelocity: gameConfig.reloadingVelocity,
             players: [
                 {

@@ -27,6 +27,9 @@ const GameSchema = new mongoose.Schema({
     reloadingVelocity: {
         type: Number,
     },
+    bulletVelocity: {
+        type: Number
+    },
     players: {
         type: Array,
         default:[]

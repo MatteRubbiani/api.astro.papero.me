@@ -97,6 +97,7 @@ io.on('connection', socket => {
     await sendLobbyChangedToPlayers(game)
     await game.saveToDb()
   })
+
   socket.on(Endpoints.SET_TOTAL_TURNS, async data => {
     let setting = parseInt(data)
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
