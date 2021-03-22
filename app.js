@@ -50,7 +50,7 @@ io.on('connection', socket => {
     socket.on(Endpoints.CHANGE_COLOR, async data =>{
       console.log("changing color")
       console.log(data)
-      let color = parseInt(data["color"])
+      let color = parseInt(data)
       let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
       if (!user) return null
       let game = await ActiveGames.getActiveGameById(user.gameId)
