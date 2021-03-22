@@ -86,6 +86,18 @@ io.on('connection', socket => {
     await game.savetoDb()
   })
 
+  socket.on(Endpoints.SET_VELOCITY, async data => {
+    let setting = parseInt(data)
+    let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+    if (!user) return null
+    let game = await ActiveGames.getActiveGameById(user.gameId)
+    if (!game) return null
+    if (user.userId !== game.adminUserId) return null
+    game.velocity = setting
+    await sendLobbyChangedToPlayers(game)
+    await game.savetoDb()
+  })
+
 
 
   socket.on("move", data => {
