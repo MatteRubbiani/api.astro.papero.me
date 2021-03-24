@@ -4,8 +4,6 @@ const ActiveGamesManager = require("../managers/activeGames")
 
 router.get("/status_by_id", async (req, res) =>{
     let gameId = req.query.gameId
-    console.log(gameId)
-    console.log(req)
     let game = await ActiveGamesManager.getActiveGameById(gameId)
     console.log(game)
     if (!game) {
