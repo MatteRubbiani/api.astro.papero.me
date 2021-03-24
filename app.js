@@ -9,6 +9,8 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
+app.use("/games", require("./routes/game"))
+
 let lastId = 0;
 io.on('connection', socket => {
 
