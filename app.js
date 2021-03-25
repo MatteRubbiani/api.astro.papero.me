@@ -129,14 +129,13 @@ io.on('connection', socket => {
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
+    console.log("game starting, user: ", user)
     if (user.userId !== game.adminUserId) return null
+    console.log("user is admin")
     game.startGame()
     await sendGameToPlayersInGame(game, Endpoints.STATUS)
     await game.saveToDb()
   })
-
-
-
 
   socket.on("move", data => {
     socket.broadcast.emit("move", data)
