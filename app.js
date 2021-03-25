@@ -133,31 +133,44 @@ io.on('connection', socket => {
     if (user.userId !== game.adminUserId) return null
     console.log("user is admin")
     game.startGame()
-    await sendGameToPlayersInGame(game, Endpoints.STATUS)
+    await sendToPlayersInGame(game, 1, Endpoints.STATUS)
+    await sendGameToPlayersInGame(game, Endpoints.GAME_MODIFIED)
     await game.saveToDb()
   })
 
-  socket.on("move", data => {
-    socket.broadcast.emit("move", data)
+  socket.on(Endpoints.MOVE_BIG, async data => {
+    let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+    if (!user) return null
+    let game = await ActiveGames.getActiveGameById(user.gameId)
+    if (!game) return null
+     await sendToPlayersInGame(game, data, Endpoints.MOVE_BIG)
   })
 
-  socket.on("shoot", data => {
-    socket.broadcast.emit("shoot", data)
+  socket.on(Endpoints.MOVE_LITTLE, async data => {
+    let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+    if (!user) return null
+    let game = await ActiveGames.getActiveGameById(user.gameId)
+    if (!game) return null
+    await sendToPlayersInGame(game, data, Endpoints.MOVE_BIG)
   })
 
-  socket.on("new-player", () => {
-    console.log("new player: ", lastId)
-    lastId = lastId + 1
-    socket.emit("your-id", lastId - 1)
-    socket.broadcast.emit("new-player", lastId - 1)
-
-  })
 
   socket.on("get-game", () => {
     console.log("getting game: ", lastId)
     socket.emit("get-game", lastId)
   })
 })
+
+async function sendToPlayersInGame(game, data, endpoint){
+  let gameUsers = await ActiveUsersManager.getUsersByGameId(game.id)
+  for (let i = 0; i < gameUsers.length; i++) {
+    let player = gameUsers[i]
+    let s = io.sockets.connected[player.sessionId]
+    if (s) {
+      s.emit(endpoint, data)
+    }
+  }
+}
 
 async function sendGameToPlayersInGame(game, endpoint) {
   let gameUsers = await ActiveUsersManager.getUsersByGameId(game.id)

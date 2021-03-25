@@ -10,6 +10,9 @@ Endpoints = {
     SET_RELOADING_VELOCITY: "set-reloading-velocity", //number -> lobbyModified a tutti
     SET_BULLET_VELOCITY: "set-bullet-velocity", //number -> lobbyModified a tutti
     START_GAME: "start-game",
+    MOVE_LITTLE: "move-little",
+    MOVE_BIG: "move-big",
+    GAME_MODIFIED: "game-modified"
 }
 
 module.exports = Endpoints
