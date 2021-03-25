@@ -31,16 +31,19 @@ class ActiveGames{
     }
 
     getGame(userId){
+        let settings
+        let players
+        let g
         switch (this.status){
             case 0:
-                let settings = {
+                settings = {
                     totalTurns: this.totalTurns,
                     velocity: this.velocity,
                     angularVelocity: this.angularVelocity,
                     reloadingVelocity: this.reloadingVelocity,
                     bulletVelocity: this.bulletVelocity
                 }
-                let players = []
+                players = []
                 this.players.forEach(p => { players.push(
                     {
                         online : p.online,
@@ -50,7 +53,7 @@ class ActiveGames{
                     }
                     )
                 })
-                let g = {
+                g = {
                     players: players,
                     admin: this.getPlayerById(this.adminUserId).localId,
                     currentPlayer: this.getPlayerById(userId) ? this.getPlayerById(userId).localId : null,
@@ -58,9 +61,30 @@ class ActiveGames{
                 }
                 return g
             case 1:
-                return {
-                    status: 1
+                settings = {
+                    totalTurns: this.totalTurns,
+                    velocity: this.velocity,
+                    angularVelocity: this.angularVelocity,
+                    reloadingVelocity: this.reloadingVelocity,
+                    bulletVelocity: this.bulletVelocity
                 }
+                players = []
+                this.players.forEach(p => { players.push(
+                    {
+                        online : p.online,
+                        color : p.color,
+                        points : p.points,
+                        localId : p.localId
+                    }
+                )
+                })
+                g = {
+                    players: players,
+                    admin: this.getPlayerById(this.adminUserId).localId,
+                    currentPlayer: this.getPlayerById(userId) ? this.getPlayerById(userId).localId : null,
+                    settings: settings
+                }
+                return g
         }
     }
 
