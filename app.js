@@ -140,7 +140,7 @@ io.on('connection', socket => {
   socket.on(Endpoints.MOVE_BIG, async data => {
 
     console.log(socket.rooms)
-    socket.broadcast.to(socket.rooms).emit(Endpoints.MOVE_BIG, data);
+    socket.broadcast.to(socket.rooms["qq"]).emit(Endpoints.MOVE_BIG, data);
     //socket.broadcast.emit(Endpoints.MOVE_BIG, data)
     /*
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
@@ -151,8 +151,7 @@ io.on('connection', socket => {
   })
 
   socket.on(Endpoints.MOVE_LITTLE, async data => {
-    console.log(socket.rooms)
-    socket.broadcast.to(socket.rooms).emit(Endpoints.MOVE_LITTLE, data);
+    socket.broadcast.to(socket.rooms["qq"]).emit(Endpoints.MOVE_LITTLE, data);
     //socket.broadcast.emit(Endpoints.MOVE_LITTLE, data)
     /*let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
