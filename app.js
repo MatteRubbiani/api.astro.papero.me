@@ -140,7 +140,7 @@ io.on('connection', socket => {
   socket.on(Endpoints.MOVE_BIG, async data => {
 
     console.log(socket.rooms)
-    for (const [key, value] of Object.entries(object)) {
+    for (const [key, value] of Object.entries(socket.rooms)) {
       socket.broadcast.to(socket.rooms[value]).emit(Endpoints.MOVE_BIG, data);
     }
     //socket.broadcast.emit(Endpoints.MOVE_BIG, data)
@@ -154,7 +154,7 @@ io.on('connection', socket => {
 
   socket.on(Endpoints.MOVE_LITTLE, async data => {
 
-    for (const [key, value] of Object.entries(object)) {
+    for (const [key, value] of Object.entries(socket.rooms)) {
       socket.broadcast.to(socket.rooms[value]).emit(Endpoints.MOVE_LITTLE, data);
     }
     //socket.broadcast.emit(Endpoints.MOVE_LITTLE, data)
