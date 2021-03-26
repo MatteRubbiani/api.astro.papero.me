@@ -59,8 +59,7 @@ io.on('connection', socket => {
       if (!user) return null
       let game = await ActiveGames.getActiveGameById(user.gameId)
       if (!game) return null
-      let success = game.changePlayerColor(user.userId, color)
-      if (!success) return null
+      game.changePlayerColor(user.userId, color)
       sendLobbyChangedToPlayers(game)
       await game.saveToDb()
     })
