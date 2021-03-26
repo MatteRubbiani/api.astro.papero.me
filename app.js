@@ -137,21 +137,24 @@ io.on('connection', socket => {
   })
 
   socket.on(Endpoints.MOVE_BIG, async data => {
+
+    socket.broadcast.emit(Endpoints.MOVE_BIG, data)
+    /*
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
-    socket.broadcast.emit(Endpoints.MOVE_BIG, data)
-    //sendToPlayersInGame(game, data, Endpoints.MOVE_BIG, user.userId)
+    //sendToPlayersInGame(game, data, Endpoints.MOVE_BIG, user.userId)/*
   })
 
   socket.on(Endpoints.MOVE_LITTLE, async data => {
-    let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+
+    socket.broadcast.emit(Endpoints.MOVE_LITTLE, data)
+    /*let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
-    socket.broadcast.emit(Endpoints.MOVE_LITTLE, data)
-    //sendToPlayersInGame(game, data, Endpoints.MOVE_BIG, user.userId)
+    //sendToPlayersInGame(game, data, Endpoints.MOVE_BIG, user.userId)*/
   })
 })
 
