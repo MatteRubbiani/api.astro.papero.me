@@ -5,6 +5,7 @@ const GameModel = require("../models/Game")
 class ActiveGamePlayers{
     constructor(playerDict) {
         this.id = playerDict.id
+        this.sessionId = playerDict.sessionId
         this.online = playerDict.online
         this.color = playerDict.color
         this.points = playerDict.points
@@ -106,10 +107,11 @@ class ActiveGames{
         }
     }
 
-    addPlayer(userId){
-        if (this.getPlayerById(userId)) return null
+    addPlayer(activeUser){
+        if (this.getPlayerById(activeUser.userId)) return null
         let p = {
-            id: userId,
+            id: activeUser.userId,
+            socketId: activeUser.socketId,
             localId: Date.now(),
             online: true,
             color: this.getFirstAvailableColor(),
@@ -165,12 +167,12 @@ class ActiveGames{
         return g
     }
 
-    static async createActiveGame(userId, gameId){
+    static async createActiveGame(activeUser, gameId){
         const dict = {
             id : gameId,
             status : 0,
             numberOfTurns: gameConfig.defaultTurns,
-            adminUserId: userId,
+            adminUserId: activeUser.userId,
             totalTurns: gameConfig.totalTurns,
             velocity: gameConfig.velocity,
             angularVelocity: gameConfig.angularVelocity,
@@ -178,7 +180,8 @@ class ActiveGames{
             reloadingVelocity: gameConfig.reloadingVelocity,
             players: [
                 {
-                    id: userId,
+                    id: activeUser.userId,
+                    sessionId: activeUser.sessionId,
                     localId: 0,
                     online: true,
                     color: 0,

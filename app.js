@@ -29,7 +29,7 @@ io.on('connection', socket => {
     await user.saveToDb()
     let game = await ActiveGames.getActiveGameById(gameId)
     if (!game) {
-      game = await ActiveGames.createActiveGame(userId, gameId)
+      game = await ActiveGames.createActiveGame(user, gameId)
       await game.saveToDb()
     }
     socket.emit(Endpoints.STATUS, game.status)
@@ -47,8 +47,8 @@ io.on('connection', socket => {
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game || game.status !==0) return null
-    game.addPlayer(user.userId)
-    await sendLobbyChangedToPlayers(game)
+    game.addPlayer(user)
+    sendLobbyChangedToPlayers(game)
     await game.saveToDb()
   })
 
@@ -61,9 +61,8 @@ io.on('connection', socket => {
       let game = await ActiveGames.getActiveGameById(user.gameId)
       if (!game) return null
       let success = game.changePlayerColor(user.userId, color)
-      console.log(success)
-
-      await sendLobbyChangedToPlayers(game)
+      if (!success) return null
+      sendLobbyChangedToPlayers(game)
       await game.saveToDb()
     })
 
@@ -75,7 +74,7 @@ io.on('connection', socket => {
     if (!game) return null
     if (user.userId !== game.adminUserId) return null
     game.angularVelocity = setting
-    await sendLobbyChangedToPlayers(game)
+    sendLobbyChangedToPlayers(game)
     await game.saveToDb()
   })
 
@@ -87,7 +86,7 @@ io.on('connection', socket => {
     if (!game) return null
     if (user.userId !== game.adminUserId) return null
     game.reloadingVelocity = setting
-    await sendLobbyChangedToPlayers(game)
+    sendLobbyChangedToPlayers(game)
     await game.saveToDb()
   })
 
@@ -99,7 +98,7 @@ io.on('connection', socket => {
     if (!game) return null
     if (user.userId !== game.adminUserId) return null
     game.velocity = setting
-    await sendLobbyChangedToPlayers(game)
+    sendLobbyChangedToPlayers(game)
     await game.saveToDb()
   })
 
@@ -111,7 +110,7 @@ io.on('connection', socket => {
     if (!game) return null
     if (user.userId !== game.adminUserId) return null
     game.totalTurns = setting
-    await sendLobbyChangedToPlayers(game)
+    sendLobbyChangedToPlayers(game)
     await game.saveToDb()
   })
 
@@ -123,7 +122,7 @@ io.on('connection', socket => {
     if (!game) return null
     if (user.userId !== game.adminUserId) return null
     game.bulletVelocity = setting
-    await sendLobbyChangedToPlayers(game)
+    sendLobbyChangedToPlayers(game)
     await game.saveToDb()
   })
 
@@ -136,8 +135,8 @@ io.on('connection', socket => {
     if (user.userId !== game.adminUserId) return null
     console.log("user is admin")
     game.startGame()
-    await sendToPlayersInGame(game, 1, Endpoints.STATUS)
-    await sendGameToPlayersInGame(game, Endpoints.GAME_MODIFIED)
+    sendToPlayersInGame(game, 1, Endpoints.STATUS)
+    sendGameToPlayersInGame(game, Endpoints.GAME_MODIFIED)
     await game.saveToDb()
   })
 
@@ -146,7 +145,7 @@ io.on('connection', socket => {
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
-     await sendToPlayersInGame(game, data, Endpoints.MOVE_BIG, user.userId)
+    sendToPlayersInGame(game, data, Endpoints.MOVE_BIG, user.userId)
   })
 
   socket.on(Endpoints.MOVE_LITTLE, async data => {
@@ -154,21 +153,15 @@ io.on('connection', socket => {
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
-    await sendToPlayersInGame(game, data, Endpoints.MOVE_BIG, user.userId)
-  })
-
-
-  socket.on("get-game", () => {
-    console.log("getting game: ", lastId)
-    socket.emit("get-game", lastId)
+    sendToPlayersInGame(game, data, Endpoints.MOVE_BIG, user.userId)
   })
 })
 
-async function sendToPlayersInGame(game, data, endpoint,exclude=null){
-  let gameUsers = await ActiveUsersManager.getUsersByGameId(game.id)
+function sendToPlayersInGame(game, data, endpoint,exclude=null){
+  let gameUsers = game.players
   for (let i = 0; i < gameUsers.length; i++) {
     let player = gameUsers[i]
-    if (player.userId !== exclude){
+    if (player.id !== exclude){
       let s = io.sockets.connected[player.sessionId]
       if (s) {
         s.emit(endpoint, data)
@@ -177,26 +170,26 @@ async function sendToPlayersInGame(game, data, endpoint,exclude=null){
   }
 }
 
-async function sendGameToPlayersInGame(game, endpoint, exclude=null) {
-  let gameUsers = await ActiveUsersManager.getUsersByGameId(game.id)
+function sendGameToPlayersInGame(game, endpoint, exclude=null) {
+  let gameUsers = game.players
   for (let i = 0; i < gameUsers.length; i++) {
     let player = gameUsers[i]
-    if (player.userId !== exclude) {
+    if (player.id !== exclude) {
       let s = io.sockets.connected[player.sessionId]
       if (s) {
-        s.emit(endpoint, game.getGame(player.userId))
+        s.emit(endpoint, game.getGame(player.id))
       }
     }
   }
 }
 
-async function sendLobbyChangedToPlayers(game){
-  let gameUsers = await ActiveUsersManager.getUsersByGameId(game.id)
+function sendLobbyChangedToPlayers(game){
+  let gameUsers = game.players
   for (let i=0; i<gameUsers.length; i++){
     let player = gameUsers[i]
     let s = io.sockets.connected[player.sessionId]
     if (s) {
-      s.emit(Endpoints.LOBBY_MODIFIED, game.getGame(player.userId))
+      s.emit(Endpoints.LOBBY_MODIFIED, game.getGame(player.id))
     }
   }
 }
