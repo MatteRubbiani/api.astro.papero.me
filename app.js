@@ -36,6 +36,9 @@ io.on('connection', socket => {
     switch (game.status){
       case 0:
         socket.emit(Endpoints.LOBBY_MODIFIED, game.getGame(userId))
+
+      case 1:
+        socket.emit(Endpoints.GAME_MODIFIED, game.getGame(userId))
     }
   })
 
@@ -43,7 +46,7 @@ io.on('connection', socket => {
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
-    if (!game) return null
+    if (!game || game.status !==0) return null
     game.addPlayer(user.userId)
     await sendLobbyChangedToPlayers(game)
     await game.saveToDb()
@@ -143,7 +146,7 @@ io.on('connection', socket => {
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
-     await sendToPlayersInGame(game, data, Endpoints.MOVE_BIG)
+     await sendToPlayersInGame(game, data, Endpoints.MOVE_BIG, user.userId)
   })
 
   socket.on(Endpoints.MOVE_LITTLE, async data => {
@@ -151,7 +154,7 @@ io.on('connection', socket => {
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
-    await sendToPlayersInGame(game, data, Endpoints.MOVE_BIG)
+    await sendToPlayersInGame(game, data, Endpoints.MOVE_BIG, user.userId)
   })
 
 
@@ -161,24 +164,28 @@ io.on('connection', socket => {
   })
 })
 
-async function sendToPlayersInGame(game, data, endpoint){
+async function sendToPlayersInGame(game, data, endpoint,exclude=null){
   let gameUsers = await ActiveUsersManager.getUsersByGameId(game.id)
   for (let i = 0; i < gameUsers.length; i++) {
     let player = gameUsers[i]
-    let s = io.sockets.connected[player.sessionId]
-    if (s) {
-      s.emit(endpoint, data)
+    if (player.userId !== exclude){
+      let s = io.sockets.connected[player.sessionId]
+      if (s) {
+        s.emit(endpoint, data)
+      }
     }
   }
 }
 
-async function sendGameToPlayersInGame(game, endpoint) {
+async function sendGameToPlayersInGame(game, endpoint, exclude=null) {
   let gameUsers = await ActiveUsersManager.getUsersByGameId(game.id)
   for (let i = 0; i < gameUsers.length; i++) {
     let player = gameUsers[i]
-    let s = io.sockets.connected[player.sessionId]
-    if (s) {
-      s.emit(endpoint, game.getGame(player.userId))
+    if (player.userId !== exclude) {
+      let s = io.sockets.connected[player.sessionId]
+      if (s) {
+        s.emit(endpoint, game.getGame(player.userId))
+      }
     }
   }
 }
@@ -193,6 +200,8 @@ async function sendLobbyChangedToPlayers(game){
     }
   }
 }
+
+
 
 
 
