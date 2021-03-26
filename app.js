@@ -160,6 +160,7 @@ function sendToPlayersInGame(game, data, endpoint, exclude=null){
   for (let i = 0; i < gameUsers.length; i++) {
     let player = gameUsers[i]
     if (player.id !== exclude){
+      console.log(player.sessionId)
       let s = io.sockets.connected[player.sessionId]
       console.log("found this socket: ", s)
       if (s) {
