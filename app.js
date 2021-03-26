@@ -25,6 +25,7 @@ io.on('connection', socket => {
     let userId = cookies["userId"]
     let gameId = data["gameId"].toLowerCase()
     if (!userId || !gameId) return null
+    socket.join(gameId)
     let user = new ActiveUsersManager(userId, gameId, socket.id)
     await user.saveToDb()
     let game = await ActiveGames.getActiveGameById(gameId)
@@ -138,13 +139,14 @@ io.on('connection', socket => {
 
   socket.on(Endpoints.MOVE_BIG, async data => {
 
+    //io.to(socket.rooms).emit(Endpoints.MOVE_BIG, data);
     socket.broadcast.emit(Endpoints.MOVE_BIG, data)
     /*
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
-    //sendToPlayersInGame(game, data, Endpoints.MOVE_BIG, user.userId)/*
+    //sendToPlayersInGame(game, data, Endpoints.MOVE_BIG, user.userId)*/
   })
 
   socket.on(Endpoints.MOVE_LITTLE, async data => {
