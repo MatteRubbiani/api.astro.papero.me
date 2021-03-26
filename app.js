@@ -53,8 +53,6 @@ io.on('connection', socket => {
   })
 
     socket.on(Endpoints.CHANGE_COLOR, async data =>{
-      console.log("changing color")
-      console.log(data)
       let color = parseInt(data)
       let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
       if (!user) return null
@@ -160,7 +158,6 @@ function sendToPlayersInGame(game, data, endpoint, exclude=null){
   for (let i = 0; i < gameUsers.length; i++) {
     let player = gameUsers[i]
     if (player.id !== exclude){
-      console.log(player.sessionId)
       let s = io.sockets.connected[player.sessionId]
       if (s) {
         s.emit(endpoint, data)

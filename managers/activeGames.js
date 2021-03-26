@@ -111,7 +111,7 @@ class ActiveGames{
         if (this.getPlayerById(activeUser.userId)) return null
         let p = {
             id: activeUser.userId,
-            socketId: activeUser.socketId,
+            sessionId: activeUser.sessionId,
             localId: Date.now(),
             online: true,
             color: this.getFirstAvailableColor(),
