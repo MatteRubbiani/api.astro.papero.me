@@ -139,6 +139,7 @@ io.on('connection', socket => {
 
   socket.on(Endpoints.MOVE_BIG, async data => {
 
+    console.log(socket.rooms)
     io.to(socket.rooms).emit(Endpoints.MOVE_BIG, data);
     //socket.broadcast.emit(Endpoints.MOVE_BIG, data)
     /*
