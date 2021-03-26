@@ -150,7 +150,7 @@ io.on('connection', socket => {
   })
 
   socket.on(Endpoints.MOVE_LITTLE, async data => {
-
+    console.log(socket.rooms)
     io.to(socket.rooms).emit(Endpoints.MOVE_LITTLE, data);
     //socket.broadcast.emit(Endpoints.MOVE_LITTLE, data)
     /*let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
