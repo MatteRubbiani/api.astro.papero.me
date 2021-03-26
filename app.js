@@ -138,8 +138,6 @@ io.on('connection', socket => {
   })
 
   socket.on(Endpoints.MOVE_BIG, async data => {
-
-    console.log(socket.rooms)
     for (const [key, value] of Object.entries(socket.rooms)) {
       socket.broadcast.to(socket.rooms[value]).emit(Endpoints.MOVE_BIG, data);
     }
