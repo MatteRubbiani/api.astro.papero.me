@@ -141,7 +141,8 @@ io.on('connection', socket => {
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
-    sendToPlayersInGame(game, data, Endpoints.MOVE_BIG, user.userId)
+    socket.broadcast.emit(Endpoints.MOVE_BIG, data)
+    //sendToPlayersInGame(game, data, Endpoints.MOVE_BIG, user.userId)
   })
 
   socket.on(Endpoints.MOVE_LITTLE, async data => {
@@ -149,7 +150,8 @@ io.on('connection', socket => {
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
-    sendToPlayersInGame(game, data, Endpoints.MOVE_BIG, user.userId)
+    socket.broadcast.emit(Endpoints.MOVE_LITTLE, data)
+    //sendToPlayersInGame(game, data, Endpoints.MOVE_BIG, user.userId)
   })
 })
 
