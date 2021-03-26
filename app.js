@@ -131,9 +131,7 @@ io.on('connection', socket => {
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
-    console.log("game starting, user: ", user)
     if (user.userId !== game.adminUserId) return null
-    console.log("user is admin")
     game.startGame()
     sendToPlayersInGame(game, 1, Endpoints.STATUS)
     sendGameToPlayersInGame(game, Endpoints.GAME_MODIFIED)
@@ -157,12 +155,13 @@ io.on('connection', socket => {
   })
 })
 
-function sendToPlayersInGame(game, data, endpoint,exclude=null){
+function sendToPlayersInGame(game, data, endpoint, exclude=null){
   let gameUsers = game.players
   for (let i = 0; i < gameUsers.length; i++) {
     let player = gameUsers[i]
     if (player.id !== exclude){
       let s = io.sockets.connected[player.sessionId]
+      console.log("found this socket: ", s)
       if (s) {
         s.emit(endpoint, data)
       }
