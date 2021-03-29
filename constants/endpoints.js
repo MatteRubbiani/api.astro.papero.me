@@ -12,7 +12,10 @@ Endpoints = {
     START_GAME: "start-game",
     MOVE_LITTLE: "move-little",
     MOVE_BIG: "move-big",
-    GAME_MODIFIED: "game-modified"
+    GAME_MODIFIED: "game-modified",
+    SHOOT: "shoot",
+    CHANGE_STATE: "change-state",
+    RELOAD: "reload"
 }
 
 module.exports = Endpoints

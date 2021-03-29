@@ -145,9 +145,27 @@ io.on('connection', socket => {
   })
 
   socket.on(Endpoints.MOVE_LITTLE, async data => {
-
     for (const [key, value] of Object.entries(socket.rooms)) {
       socket.volatile.broadcast.to(socket.rooms[value]).emit(Endpoints.MOVE_LITTLE, data);
+    }
+  })
+
+  socket.on(Endpoints.SHOOT, async data => {
+    for (const [key, value] of Object.entries(socket.rooms)) {
+      socket.volatile.broadcast.to(socket.rooms[value]).emit(Endpoints.SHOOT, data);
+    }
+  })
+
+  socket.on(Endpoints.CHANGE_STATE, async data => {
+    for (const [key, value] of Object.entries(socket.rooms)) {
+      socket.volatile.broadcast.to(socket.rooms[value]).emit(Endpoints.CHANGE_STATE, data);
+    }
+  })
+
+
+  socket.on(Endpoints.RELOAD, async data => {
+    for (const [key, value] of Object.entries(socket.rooms)) {
+      socket.volatile.broadcast.to(socket.rooms[value]).emit(Endpoints.RELOAD, data);
     }
   })
 })
