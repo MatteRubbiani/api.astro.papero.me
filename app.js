@@ -11,7 +11,6 @@ const io = require('socket.io')(http);
 
 app.use("/games", require("./routes/game"))
 
-let lastId = 0;
 io.on('connection', socket => {
 
   socket.on(Endpoints.CONNECT_TO_GAME, async data => {
@@ -139,6 +138,7 @@ io.on('connection', socket => {
   })
 
   socket.on(Endpoints.MOVE_BIG, async data => {
+    console.log(data)
     for (const [key, value] of Object.entries(socket.rooms)) {
       socket.volatile.broadcast.to(socket.rooms[value]).emit(Endpoints.MOVE_BIG, data);
     }
