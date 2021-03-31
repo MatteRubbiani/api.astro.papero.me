@@ -151,13 +151,13 @@ io.on('connection', socket => {
 
   socket.on(Endpoints.SHOOT, async data => {
     for (const [key, value] of Object.entries(socket.rooms)) {
-      socket.volatile.broadcast.to(socket.rooms[value]).emit(Endpoints.SHOOT, data);
+      socket.broadcast.to(socket.rooms[value]).emit(Endpoints.SHOOT, data);
     }
   })
 
   socket.on(Endpoints.CHANGE_STATE, async data => {
     for (const [key, value] of Object.entries(socket.rooms)) {
-      socket.volatile.broadcast.to(socket.rooms[value]).emit(Endpoints.CHANGE_STATE, data);
+      socket.broadcast.to(socket.rooms[value]).emit(Endpoints.CHANGE_STATE, data);
     }
   })
 
