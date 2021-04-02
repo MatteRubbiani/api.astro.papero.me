@@ -137,7 +137,7 @@ class ActiveGames{
 
     removePlayer(userId){
         for (let i=0; i<this.players.length; i++){
-            if (this.players[i].userId === userId){
+            if (this.players[i].id === userId){
                 if (this.players.length < 2){
                     return "game_deleted"
                 }
