@@ -139,8 +139,16 @@ io.on('connection', socket => {
     if (user.userId !== game.adminUserId) return null
     game.startGame()
     sendToPlayersInGame(game, 1, Endpoints.STATUS)
-    sendGameToPlayersInGame(game, Endpoints.GAME_MODIFIED)
+    //sendGameToPlayersInGame(game, Endpoints.GAME_MODIFIED)
     await game.saveToDb()
+  })
+
+  socket.on(Endpoints.GAME_MODIFIED, async () => {
+    let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+    if (!user) return null
+    let game = await ActiveGames.getActiveGameById(user.gameId)
+    if (!game) return null
+    socket.emit(Endpoints.GAME_MODIFIED, game.getGame(user.userId))
   })
 
   socket.on(Endpoints.MOVE_BIG, async data => {
