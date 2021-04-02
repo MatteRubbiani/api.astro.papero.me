@@ -141,7 +141,7 @@ class ActiveGames{
                 if (this.players.length < 2){
                     return "game_deleted"
                 }
-                if(this.players[i].localId === this.adminUserId){
+                if(this.players[i].id === this.adminUserId){
                     this.players.splice(i, 1)
                     this.adminUserId = this.players[0] ? this.players[0].localId : this.players[1].localId
                 }else{
