@@ -142,6 +142,7 @@ class ActiveGames{
                     return "game_deleted"
                 }
                 if(this.players[i].id === this.adminUserId){
+                    console.log("is admin")
                     this.players.splice(i, 1)
                     this.adminUserId = this.players[0] ? this.players[0].localId : this.players[1].localId
                 }else{
