@@ -179,7 +179,7 @@ io.on('connection', socket => {
   socket.on("disconnect", async () => {
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
-    let game = await ActiveGamesManager.getActiveGameById(user.gameId)
+    let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
     if (game.status === 0){
       let success = game.removePlayer(user.userId)
