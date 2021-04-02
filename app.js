@@ -57,7 +57,7 @@ io.on('connection', socket => {
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game || game.status !==0) return null
-    s.emit(Endpoints.LOBBY_MODIFIED, game.getGame(user.userId))
+    socket.emit(Endpoints.LOBBY_MODIFIED, game.getGame(user.userId))
   })
 
   socket.on(Endpoints.CHANGE_COLOR, async data =>{
