@@ -62,13 +62,11 @@ io.on('connection', socket => {
 
   socket.on(Endpoints.CHANGE_COLOR, async data =>{
     let color = parseInt(data)
-    console.log("changing color: ", color)
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
     game.changePlayerColor(user.userId, color)
-    console.log("color changed")
     sendLobbyChangedToPlayers(game)
     await game.saveToDb()
   })
@@ -187,7 +185,7 @@ io.on('connection', socket => {
         await game.deleteGame()
       }
       if (success === "user_deleted"){
-        game.saveToDb()
+        await game.saveToDb()
       }
       sendLobbyChangedToPlayers(game)
     }
