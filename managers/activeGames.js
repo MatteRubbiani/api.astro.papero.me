@@ -144,7 +144,7 @@ class ActiveGames{
                 if(this.players[i].id === this.adminUserId){
                     console.log("is admin")
                     this.players.splice(i, 1)
-                    this.adminUserId = this.players[0] ? this.players[0].localId : this.players[1].localId
+                    this.adminUserId = this.players[0] ? this.players[0].id : this.players[1].id
                 }else{
                     this.players.splice(i, 1)
                 }
