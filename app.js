@@ -175,6 +175,23 @@ io.on('connection', socket => {
       socket.volatile.broadcast.to(socket.rooms[value]).emit(Endpoints.RELOAD, data);
     }
   })
+
+  socket.on("disconnect", async () => {
+    let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+    if (!user) return null
+    let game = await ActiveGamesManager.getActiveGameById(user.gameId)
+    if (!game) return null
+    if (game.status === 0){
+      let success = game.removePlayer(user.userId)
+      if (success === "game_deleted"){
+        await game.deleteGame()
+      }
+      if (success === "user_deleted"){
+        game.saveToDb()
+      }
+      sendLobbyChangedToPlayers(game)
+    }
+  })
 })
 
 function sendToPlayersInGame(game, data, endpoint, exclude=null){

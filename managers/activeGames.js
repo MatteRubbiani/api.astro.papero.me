@@ -1,5 +1,4 @@
 const gameConfig = require("../constants/gameConfig")
-const ActiveUsersManager = require("./activeUsers")
 const GameModel = require("../models/Game")
 
 class ActiveGamePlayers{
@@ -136,7 +135,23 @@ class ActiveGames{
         return busy
     }
 
-    changeSettings
+    removePlayer(userId){
+        for (let i=0; i<this.players.length; i++){
+            if (this.players[i].userId === userId){
+                if (this.players.length < 2){
+                    return "game_deleted"
+                }
+                if(this.players[i].localId === this.adminUserId){
+                    this.players.splice(i, 1)
+                    this.adminUserId = this.players[0] ? this.players[0].localId : this.players[1].localId
+                }else{
+                    this.players.splice(i, 1)
+                }
+                return "user_deleted"
+            }
+        }
+        return null
+    }
 
     startGame(){
         this.status = 1
@@ -157,6 +172,11 @@ class ActiveGames{
         }
         await GameModel.replaceOne({id: this.id}, d, {upsert: true})
     }
+
+    async deleteGame(){
+        await GameModel.remove({id: this.id})
+    }
+
 
     static async getActiveGameById(gameId) {
         let game = await GameModel.findOne({id: gameId}, (err, game) => {
