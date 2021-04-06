@@ -226,7 +226,6 @@ function sendToPlayersInGame(game, data, endpoint, exclude=null){
       let s = io.sockets.connected[player.sessionId]
       if (s) {
         s.emit(endpoint, data)
-        console.log("endpoint: ", endpoint, " data: ", data, "user id: ", player.id)
       }
     }
   }
