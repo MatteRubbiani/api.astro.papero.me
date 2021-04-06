@@ -207,14 +207,13 @@ io.on('connection', socket => {
       }
       sendLobbyChangedToPlayers(game)
     }else{
-      console.log("killing user")
       game.changePlayerStatus(user.userId, 0)
-      let data = {
-        localId: game.getPlayerById(user.userId).localId,
-        state: 0
-      }
+      console.log(socket.rooms)
       for (const [key, value] of Object.entries(socket.rooms)) {
-        socket.broadcast.to(socket.rooms[value]).emit(Endpoints.CHANGE_STATE, data);
+        socket.broadcast.to(socket.rooms[value]).emit(Endpoints.CHANGE_STATE, {
+          localId: game.getPlayerById(user.userId).localId,
+          state: 0
+        });
       }
       await game.saveToDb()
     }
