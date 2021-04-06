@@ -140,6 +140,22 @@ io.on('connection', socket => {
     await game.saveToDb()
   })
 
+  socket.on(Endpoints.READY, async () => {
+    let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+    if (!user) return null
+    let game = await ActiveGames.getActiveGameById(user.gameId)
+    if (!game) return null
+    game.changePlayerStatus(user.userId, 0.5)
+    if (game.status === 0.5){
+      if (game.allPlayersReady()){
+        game.startGame()
+        sendToPlayersInGame(game, 1, Endpoints.STATUS)
+      }
+    }
+    await game.saveToDb()
+    //add kill...
+  })
+
   socket.on(Endpoints.GAME_MODIFIED, async () => {
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
@@ -179,29 +195,11 @@ io.on('connection', socket => {
     await game.saveToDb()
   })
 
-  socket.on(Endpoints.READY, async () => {
-    let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
-    if (!user) return null
-    let game = await ActiveGames.getActiveGameById(user.gameId)
-    if (!game) return null
-    game.changePlayerStatus(user.userId, 0.5)
-    if (game.status === 0.5){
-      if (game.allPlayersReady()){
-        game.startGame()
-        sendToPlayersInGame(game, 1, Endpoints.STATUS)
-      }
-    }
-    await game.saveToDb()
-    //add kill...
-  })
-
-
   socket.on(Endpoints.RELOAD, data => {
     for (const [key, value] of Object.entries(socket.rooms)) {
       socket.volatile.broadcast.to(socket.rooms[value]).emit(Endpoints.RELOAD, data);
     }
   })
-
 
   socket.on("disconnect", async () => {
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
