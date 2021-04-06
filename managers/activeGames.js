@@ -81,7 +81,7 @@ class ActiveGames{
                 })
                 g = {
                     players: players,
-                    admin: this.getPlayerById(this.adminUserId).localId,
+                    //admin: this.getPlayerById(this.adminUserId).localId,
                     currentPlayer: this.getPlayerById(userId) ? this.getPlayerById(userId).localId : null,
                     settings: settings
                 }
