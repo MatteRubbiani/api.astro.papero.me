@@ -199,8 +199,6 @@ io.on('connection', socket => {
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
     if (game.status >= 1){
-      console.log("killing user")
-      console.log(socket)
       game.changePlayerStatus(user.userId, 0)
       let data = {
         localId: game.getPlayerById(user.userId).localId,
