@@ -12,7 +12,6 @@ const io = require('socket.io')(http);
 app.use("/games", require("./routes/game"))
 
 io.on('connection', socket => {
-
   socket.on(Endpoints.CONNECT_TO_GAME, async data => {
     let cookies = socket.handshake.headers.cookie
     try {

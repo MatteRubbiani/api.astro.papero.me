@@ -13,6 +13,7 @@ class ActiveGamePlayers{
 }
 
 class ActiveGames{
+    static readyPlayers = []
     constructor(gameDict) {
         this.id = gameDict.id
         this.adminUserId = gameDict.adminUserId
@@ -177,14 +178,22 @@ class ActiveGames{
         for (let i=0; i<this.players.length; i++){
             if (this.players[i].id === userId){
                 this.players[i].status = status
+                if (status === 0.5) ActiveGames.readyPlayers.push(userId)
             }
         }
     }
 
     allPlayersReady(){
         let allReady = true
-        for (let i=0; i<this.players.length; i++){
-            if (this.players[i].status !== 0.5) allReady = false
+        for (let i=0; i<this.players.length; i++) {
+            if (!ActiveGames.readyPlayers.includes(this.players[i].id)) allReady = false
+        }
+        if (allReady){
+            for (let i=0; i<this.players.length; i++) {
+                if (ActiveGames.readyPlayers.includes(this.players[i].id)) {
+                    this.players.splice(i, 1)
+                }
+            }
         }
         return allReady
     }
