@@ -193,7 +193,7 @@ io.on('connection', socket => {
     }
   })
 
-  socket.on("disconnecting", async() => {
+  socket.on("pre-disconnect", async() => {
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
