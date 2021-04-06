@@ -163,6 +163,7 @@ io.on('connection', socket => {
   })
 
   socket.on(Endpoints.CHANGE_STATE, async data => {
+    console.log(data)
     for (const [key, value] of Object.entries(socket.rooms)) {
       socket.broadcast.to(socket.rooms[value]).emit(Endpoints.CHANGE_STATE, data);
     }
