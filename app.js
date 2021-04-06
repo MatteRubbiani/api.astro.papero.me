@@ -67,7 +67,6 @@ io.on('connection', socket => {
     game.changePlayerColor(user.userId, color)
     sendLobbyChangedToPlayers(game)
     await game.saveToDb()
-    console.log(socket)
   })
 
   socket.on(Endpoints.SET_ANGULAR_VELOCITY, async data => {
@@ -193,6 +192,7 @@ io.on('connection', socket => {
   })
 
   socket.on("pre-disconnect", async() => {
+    console.log("prediconnecting")
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
@@ -238,7 +238,6 @@ function sendToPlayersInGame(game, data, endpoint, exclude=null){
       let s = io.sockets.connected[player.sessionId]
       if (s) {
         s.emit(endpoint, data)
-        console.log("sending to player: ", player.id, ", endpoint: ", endpoint, ", data: ", data)
       }
     }
   }
