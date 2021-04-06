@@ -191,24 +191,6 @@ io.on('connection', socket => {
     }
   })
 
-  socket.on("pre-disconnect", async() => {
-    console.log("prediconnecting")
-    let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
-    if (!user) return null
-    let game = await ActiveGames.getActiveGameById(user.gameId)
-    if (!game) return null
-    if (game.status >= 1){
-      game.changePlayerStatus(user.userId, 0)
-      let data = {
-        localId: game.getPlayerById(user.userId).localId,
-        state: 0
-      }
-      for (const [key, value] of Object.entries(socket.rooms)) {
-        socket.broadcast.to(socket.rooms[value]).emit(Endpoints.CHANGE_STATE, data);
-      }
-      await game.saveToDb()
-    }
-  })
 
   socket.on("disconnect", async () => {
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
@@ -225,7 +207,13 @@ io.on('connection', socket => {
       }
       sendLobbyChangedToPlayers(game)
     }else{
-
+        game.changePlayerStatus(user.userId, 0)
+        let data = {
+          localId: game.getPlayerById(user.userId).localId,
+          state: 0
+        }
+        sendToPlayersInGame(game, data, Endpoints.CHANGE_STATE)
+        await game.saveToDb()
     }
   })
 })
