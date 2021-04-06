@@ -207,6 +207,7 @@ io.on('connection', socket => {
       }
       sendLobbyChangedToPlayers(game)
     }else{
+      console.log("killing user")
       game.changePlayerStatus(user.userId, 0)
       let data = {
         localId: game.getPlayerById(user.userId).localId,
