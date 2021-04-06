@@ -227,7 +227,6 @@ class ActiveGames{
         await GameModel.remove({id: this.id})
     }
 
-
     static async getActiveGameById(gameId) {
         let game = await GameModel.findOne({id: gameId}, (err, game) => {
             return game

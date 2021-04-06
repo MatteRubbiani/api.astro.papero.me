@@ -165,6 +165,8 @@ io.on('connection', socket => {
     for (const [key, value] of Object.entries(socket.rooms)) {
       socket.broadcast.to(socket.rooms[value]).emit(Endpoints.CHANGE_STATE, data);
     }
+    //salvo in che stato sei
+    //chi ha ucciso chi {killedBy, status}
   })
 
   socket.on(Endpoints.READY, async () => {
@@ -209,7 +211,15 @@ io.on('connection', socket => {
       }
       sendLobbyChangedToPlayers(game)
     }else{
-      //change status...
+      game.changePlayerStatus(user.userId, 0)
+      let data = {
+        localId: game.getPlayerById(user.userId).localId,
+        state: 0
+      }
+      for (const [key, value] of Object.entries(socket.rooms)) {
+        socket.broadcast.to(socket.rooms[value]).emit(Endpoints.CHANGE_STATE, data);
+      }
+      await game.saveToDb()
     }
   })
 })
