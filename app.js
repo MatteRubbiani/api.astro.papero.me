@@ -177,6 +177,7 @@ io.on('connection', socket => {
     game.changePlayerStatus(user.userId, 0.5)
     if (game.status === 0.5){
       console.log("status is .5")
+      console.log(game.players)
       if (game.allPlayersReady()){
         console.log("all players are ready")
         game.startGame()
