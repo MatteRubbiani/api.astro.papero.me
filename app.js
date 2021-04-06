@@ -171,16 +171,12 @@ io.on('connection', socket => {
 
   socket.on(Endpoints.READY, async () => {
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
-    console.log(user.userId)
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
     game.changePlayerStatus(user.userId, 0.5)
     if (game.status === 0.5){
-      console.log("status is .5")
-      console.log(game)
       if (game.allPlayersReady()){
-        console.log("all players are ready")
         game.startGame()
         sendToPlayersInGame(game, 1, Endpoints.STATUS)
       }
