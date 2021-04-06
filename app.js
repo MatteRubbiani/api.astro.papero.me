@@ -195,14 +195,12 @@ io.on('connection', socket => {
   })
 
   socket.on("disconnect", async () => {
-    console.log("disconnecting")
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
     if (game.status === 0){
       let success = game.removePlayer(user.userId)
-      console.log(success)
       if (success === "game_deleted"){
         await game.deleteGame()
       }
