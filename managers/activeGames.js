@@ -97,6 +97,14 @@ class ActiveGames{
         return null
     }
 
+    getPlayerByLocalId(localId){
+        for (let i=0; i<this.players.length; i++){
+            let p = this.players[i]
+            if (p.localId === localId) return p
+        }
+        return null
+    }
+
     getFirstAvailableColor(){
         for (let i=0; i<30; i++){
             let free = true

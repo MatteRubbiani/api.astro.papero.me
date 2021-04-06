@@ -164,8 +164,21 @@ io.on('connection', socket => {
     for (const [key, value] of Object.entries(socket.rooms)) {
       socket.broadcast.to(socket.rooms[value]).emit(Endpoints.CHANGE_STATE, data);
     }
+    let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+    if (!user) return null
+    let game = await ActiveGames.getActiveGameById(user.gameId)
+    if (!game) return null
+    let status = data["status"]
+    if (status === 0){
+      let killedByLocalId = data["killedBy"]
+      let killer = game.getPlayerByLocalId(killedByLocalId)
+      game.addKill(killer.id, user.userId)
+    }else{
+      game.changePlayerStatus(user.userId, status)
+    }
+    await game.saveToDb()
     //salvo in che stato sei
-    //chi ha ucciso chi {killedBy, status}
+    //chi ha ucciso chi {killedBy, state}
   })
 
   socket.on(Endpoints.READY, async () => {
