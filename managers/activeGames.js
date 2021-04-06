@@ -160,6 +160,7 @@ class ActiveGames{
     startGame(){
         this.status += 0.5
         if (this.status === 1){
+            console.log("game started, seting player status to two")
             for (let i=0; i<this.players.length; i++){
                 this.players[i].status = 2
             }

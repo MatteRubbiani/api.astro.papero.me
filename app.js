@@ -137,8 +137,7 @@ io.on('connection', socket => {
     if (!game) return null
     if (user.userId !== game.adminUserId) return null
     game.startGame()
-    sendToPlayersInGame(game, 0.5, Endpoints.STATUS)
-    //sendGameToPlayersInGame(game, Endpoints.GAME_MODIFIED)
+    sendToPlayersInGame(game, game.status, Endpoints.STATUS)
     await game.saveToDb()
   })
 
