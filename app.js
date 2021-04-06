@@ -36,7 +36,7 @@ io.on('connection', socket => {
       case 0:
         socket.emit(Endpoints.LOBBY_MODIFIED, game.getGame(userId));
       case 1:
-        socket.emit(Endpoints.GAME_MODIFIED, game.getGame(userId))
+        //socket.emit(Endpoints.GAME_MODIFIED, game.getGame(userId))
     }
   })
 
