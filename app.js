@@ -169,6 +169,7 @@ io.on('connection', socket => {
   })
 
   socket.on(Endpoints.READY, async () => {
+    console.log(data)
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
