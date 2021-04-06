@@ -148,13 +148,13 @@ io.on('connection', socket => {
     socket.emit(Endpoints.GAME_MODIFIED, game.getGame(user.userId))
   })
 
-  socket.on(Endpoints.MOVE_BIG, async data => {
+  socket.on(Endpoints.MOVE_BIG, data => {
     for (const [key, value] of Object.entries(socket.rooms)) {
       socket.volatile.broadcast.to(socket.rooms[value]).emit(Endpoints.MOVE_BIG, data);
     }
   })
 
-  socket.on(Endpoints.SHOOT, async data => {
+  socket.on(Endpoints.SHOOT, data => {
     for (const [key, value] of Object.entries(socket.rooms)) {
       socket.broadcast.to(socket.rooms[value]).emit(Endpoints.SHOOT, data);
     }
@@ -177,8 +177,6 @@ io.on('connection', socket => {
       game.changePlayerStatus(user.userId, status)
     }
     await game.saveToDb()
-    //salvo in che stato sei
-    //chi ha ucciso chi {killedBy, state}
   })
 
   socket.on(Endpoints.READY, async () => {
@@ -198,7 +196,7 @@ io.on('connection', socket => {
   })
 
 
-  socket.on(Endpoints.RELOAD, async data => {
+  socket.on(Endpoints.RELOAD, data => {
     for (const [key, value] of Object.entries(socket.rooms)) {
       socket.volatile.broadcast.to(socket.rooms[value]).emit(Endpoints.RELOAD, data);
     }
