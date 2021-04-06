@@ -47,7 +47,7 @@ class ActiveGames{
                 players = []
                 this.players.forEach(p => { players.push(
                     {
-                        status : p.status,
+                        state : p.status, //occhio è stateeee
                         color : p.color,
                         points : p.points,
                         localId : p.localId
@@ -72,7 +72,7 @@ class ActiveGames{
                 players = []
                 this.players.forEach(p => { players.push(
                     {
-                        status : p.status,
+                        state : p.status, //occhio è stateeee
                         color : p.color,
                         points : p.points,
                         localId : p.localId
