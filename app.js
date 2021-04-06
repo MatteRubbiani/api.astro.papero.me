@@ -67,6 +67,7 @@ io.on('connection', socket => {
     game.changePlayerColor(user.userId, color)
     sendLobbyChangedToPlayers(game)
     await game.saveToDb()
+    console.log(socket)
   })
 
   socket.on(Endpoints.SET_ANGULAR_VELOCITY, async data => {
