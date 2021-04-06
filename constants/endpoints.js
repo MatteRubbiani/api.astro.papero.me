@@ -14,7 +14,8 @@ Endpoints = {
     GAME_MODIFIED: "game-modified",
     SHOOT: "shoot",
     CHANGE_STATE: "change-state",
-    RELOAD: "reload"
+    RELOAD: "reload",
+    READY: "ready"
 }
 
 module.exports = Endpoints

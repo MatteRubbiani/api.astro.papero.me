@@ -163,19 +163,21 @@ io.on('connection', socket => {
   })
 
   socket.on(Endpoints.CHANGE_STATE, async data => {
-    console.log(data)
     for (const [key, value] of Object.entries(socket.rooms)) {
       socket.broadcast.to(socket.rooms[value]).emit(Endpoints.CHANGE_STATE, data);
     }
+  })
+
+  socket.on(Endpoints.READY, async () => {
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
-    game.changePlayerStatus(user.userId, data["state"])
+    game.changePlayerStatus(user.userId, 0.5)
     if (game.status === 0.5){
       if (game.allPlayersReady()){
         game.startGame()
-        sendToPlayersInGame(game, 0.5, Endpoints.STATUS)
+        sendToPlayersInGame(game, 1, Endpoints.STATUS)
       }
     }
     await game.saveToDb()
