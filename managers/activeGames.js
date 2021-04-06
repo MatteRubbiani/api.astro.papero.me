@@ -81,7 +81,7 @@ class ActiveGames{
                 })
                 g = {
                     players: players,
-                    //admin: this.getPlayerById(this.adminUserId).localId,
+                    admin: this.getPlayerById(this.adminUserId).localId,
                     currentPlayer: this.getPlayerById(userId) ? this.getPlayerById(userId).localId : null,
                     settings: settings
                 }
@@ -189,9 +189,11 @@ class ActiveGames{
             if (!ActiveGames.readyPlayers.includes(this.players[i].id)) allReady = false
         }
         if (allReady){
-            for (let i=0; i<this.players.length; i++) {
-                if (ActiveGames.readyPlayers.includes(this.players[i].id)) {
-                    this.players.splice(i, 1)
+            for (let i=0; i<ActiveGames.readyPlayers.length; i++) {
+                for (let j = 0; j<this.players.length; j++){
+                    if (ActiveGames.readyPlayers[i] === this.players[j].id){
+                         ActiveGames.readyPlayers.splice(i, 1)
+                    }
                 }
             }
         }
