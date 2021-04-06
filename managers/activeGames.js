@@ -5,7 +5,7 @@ class ActiveGamePlayers{
     constructor(playerDict) {
         this.id = playerDict.id
         this.sessionId = playerDict.sessionId
-        this.online = playerDict.online
+        this.status = playerDict.status
         this.color = playerDict.color
         this.points = playerDict.points
         this.localId = playerDict.localId
@@ -46,7 +46,7 @@ class ActiveGames{
                 players = []
                 this.players.forEach(p => { players.push(
                     {
-                        online : p.online,
+                        status : p.status,
                         color : p.color,
                         points : p.points,
                         localId : p.localId
@@ -71,7 +71,7 @@ class ActiveGames{
                 players = []
                 this.players.forEach(p => { players.push(
                     {
-                        online : p.online,
+                        status : p.status,
                         color : p.color,
                         points : p.points,
                         localId : p.localId
@@ -112,9 +112,11 @@ class ActiveGames{
             id: activeUser.userId,
             sessionId: activeUser.sessionId,
             localId: Date.now(),
-            online: true,
+            status: 1,
             color: this.getFirstAvailableColor(),
-            points: 0
+            points: 0,
+            from: 0,
+            to: 0
         }
         this.players.push(p)
     }
@@ -156,6 +158,29 @@ class ActiveGames{
 
     startGame(){
         this.status = 1
+    }
+
+    addPoints(userId, points){
+        for (let i=0; i<this.players.length; i++){
+            if (this.players[i].id === userId){
+                this.players[i].to +=  points
+            }
+        }
+    }
+
+    changePlayerStatus(userId, status){
+        for (let i=0; i<this.players.length; i++){
+            if (this.players[i].id === userId){
+                this.players[i].status = status
+            }
+        }
+    }
+
+    addKill(killerUserId, killedUserId){
+        //add points to attacker
+        this.addPoints(killerUserId, 1)
+        //change status
+        this.changePlayerStatus(killedUserId, 0)
     }
 
     async saveToDb(){
@@ -204,9 +229,11 @@ class ActiveGames{
                     id: activeUser.userId,
                     sessionId: activeUser.sessionId,
                     localId: 0,
-                    online: true,
+                    status: 1,
                     color: 0,
-                    points: 0
+                    points: 0,
+                    from: 0,
+                    to: 0
                 }
             ]
         }

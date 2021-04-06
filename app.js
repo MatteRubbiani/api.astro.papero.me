@@ -35,8 +35,7 @@ io.on('connection', socket => {
     socket.emit(Endpoints.STATUS, game.status)
     switch (game.status){
       case 0:
-        socket.emit(Endpoints.LOBBY_MODIFIED, game.getGame(userId))
-
+        socket.emit(Endpoints.LOBBY_MODIFIED, game.getGame(userId));
       case 1:
         socket.emit(Endpoints.GAME_MODIFIED, game.getGame(userId))
     }
@@ -172,6 +171,8 @@ io.on('connection', socket => {
   socket.on(Endpoints.CHANGE_STATE, async data => {
     for (const [key, value] of Object.entries(socket.rooms)) {
       socket.broadcast.to(socket.rooms[value]).emit(Endpoints.CHANGE_STATE, data);
+      console.log(data)
+      //add kill...
     }
   })
 
@@ -198,6 +199,8 @@ io.on('connection', socket => {
         await game.saveToDb()
       }
       sendLobbyChangedToPlayers(game)
+    }else{
+      //change status...
     }
   })
 })
