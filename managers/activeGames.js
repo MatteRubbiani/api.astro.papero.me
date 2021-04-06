@@ -112,7 +112,7 @@ class ActiveGames{
             id: activeUser.userId,
             sessionId: activeUser.sessionId,
             localId: Date.now(),
-            status: 1,
+            status: 0,
             color: this.getFirstAvailableColor(),
             points: 0,
             from: 0,
@@ -157,7 +157,12 @@ class ActiveGames{
     }
 
     startGame(){
-        this.status = 1
+        this.status += 0.5
+        if (this.status === 1){
+            for (let i=0; i<this.players.length; i++){
+                this.players[i].status = 2
+            }
+        }
     }
 
     addPoints(userId, points){
@@ -174,6 +179,14 @@ class ActiveGames{
                 this.players[i].status = status
             }
         }
+    }
+
+    allPlayersReady(){
+        let allReady = true
+        for (let i=0; i<this.players.length; i++){
+            if (this.players[i].status !== 0.5) allReady = false
+        }
+        return allReady
     }
 
     addKill(killerUserId, killedUserId){
@@ -229,7 +242,7 @@ class ActiveGames{
                     id: activeUser.userId,
                     sessionId: activeUser.sessionId,
                     localId: 0,
-                    status: 1,
+                    status: 0,
                     color: 0,
                     points: 0,
                     from: 0,

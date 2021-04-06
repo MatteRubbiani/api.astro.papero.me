@@ -137,7 +137,7 @@ io.on('connection', socket => {
     if (!game) return null
     if (user.userId !== game.adminUserId) return null
     game.startGame()
-    sendToPlayersInGame(game, 1, Endpoints.STATUS)
+    sendToPlayersInGame(game, 0.5, Endpoints.STATUS)
     //sendGameToPlayersInGame(game, Endpoints.GAME_MODIFIED)
     await game.saveToDb()
   })
@@ -156,12 +156,6 @@ io.on('connection', socket => {
     }
   })
 
-  socket.on(Endpoints.MOVE_LITTLE, async data => {
-    for (const [key, value] of Object.entries(socket.rooms)) {
-      socket.volatile.broadcast.to(socket.rooms[value]).emit(Endpoints.MOVE_LITTLE, data);
-    }
-  })
-
   socket.on(Endpoints.SHOOT, async data => {
     for (const [key, value] of Object.entries(socket.rooms)) {
       socket.broadcast.to(socket.rooms[value]).emit(Endpoints.SHOOT, data);
@@ -171,6 +165,18 @@ io.on('connection', socket => {
   socket.on(Endpoints.CHANGE_STATE, async data => {
     for (const [key, value] of Object.entries(socket.rooms)) {
       socket.broadcast.to(socket.rooms[value]).emit(Endpoints.CHANGE_STATE, data);
+      let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+      if (!user) return null
+      let game = await ActiveGames.getActiveGameById(user.gameId)
+      if (!game) return null
+      game.changePlayerStatus(user.userId, data["state"])
+      if (game.status === 0.5){
+        if (game.allPlayersReady()){
+          game.startGame()
+          sendToPlayersInGame(game, 0.5, Endpoints.STATUS)
+        }
+      }
+    await game.saveToDb()
       console.log(data)
       //add kill...
     }
