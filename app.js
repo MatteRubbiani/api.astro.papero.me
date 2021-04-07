@@ -21,6 +21,7 @@ io.on('connection', socket => {
       return null
     }
     let userId = cookies["userId"]
+    if (!data["gameId"]) return null
     let gameId = data["gameId"].toLowerCase()
     if (!userId || !gameId) return null
     socket.join(gameId)
