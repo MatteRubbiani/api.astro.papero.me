@@ -29,64 +29,58 @@ class ActiveGames{
             let p = new ActiveGamePlayers(gameDict.players[i])
             this.players.push(p)
         }
+        this.timer = gameDict.timer
     }
 
-    getGame(userId){
-        let settings
+    getGame(userId) {
         let players
         let g
-        switch (this.status){
-            case 0:
-                settings = {
-                    totalTurns: this.totalTurns,
-                    velocity: this.velocity,
-                    angularVelocity: this.angularVelocity,
-                    reloadingVelocity: this.reloadingVelocity,
-                    bulletVelocity: this.bulletVelocity
-                }
-                players = []
-                this.players.forEach(p => { players.push(
+        if ((this.status * 10) % 10 === 0) { // è intero...
+            let settings = {
+                totalTurns: this.totalTurns,
+                velocity: this.velocity,
+                angularVelocity: this.angularVelocity,
+                reloadingVelocity: this.reloadingVelocity,
+                bulletVelocity: this.bulletVelocity
+            }
+            players = []
+            this.players.forEach(p => {
+                players.push(
                     {
-                        state : p.status, //occhio è stateeee
-                        color : p.color,
-                        points : p.points,
-                        localId : p.localId
-                    }
-                    )
-                })
-                g = {
-                    players: players,
-                    admin: this.getPlayerById(this.adminUserId).localId,
-                    currentPlayer: this.getPlayerById(userId) ? this.getPlayerById(userId).localId : null,
-                    settings: settings
-                }
-                return g
-            case 1:
-                settings = {
-                    totalTurns: this.totalTurns,
-                    velocity: this.velocity,
-                    angularVelocity: this.angularVelocity,
-                    reloadingVelocity: this.reloadingVelocity,
-                    bulletVelocity: this.bulletVelocity
-                }
-                players = []
-                this.players.forEach(p => { players.push(
-                    {
-                        state : p.status, //occhio è stateeee
-                        color : p.color,
-                        points : p.points,
-                        localId : p.localId
+                        state: p.status, //occhio è stateeee
+                        color: p.color,
+                        points: p.points,
+                        localId: p.localId
                     }
                 )
-                })
-                g = {
-                    players: players,
-                    admin: this.getPlayerById(this.adminUserId).localId,
-                    currentPlayer: this.getPlayerById(userId) ? this.getPlayerById(userId).localId : null,
-                    settings: settings
-                }
-                return g
+            })
+            g = {
+                status: this.status,
+                players: players,
+                admin: this.getPlayerById(this.adminUserId).localId,
+                currentPlayer: this.getPlayerById(userId) ? this.getPlayerById(userId).localId : null,
+                settings: settings
+            }
+            return g
         }
+        if ((this.status * 10) % 5 === 0){ //è ....,5
+            players = []
+            this.players.forEach(p => {
+                let d = {
+                    from: p.from,
+                    to: p.to,
+                    color: p.color
+                }
+                players.push(d)
+            })
+            g = {
+                players: players,
+                timer: this.timer,
+                turn: parseInt(this.status)
+            }
+            return g
+        }
+
     }
 
     getPlayerById(userId){
@@ -209,11 +203,30 @@ class ActiveGames{
         return allReady
     }
 
-    addKill(killerUserId, killedUserId){
+    addKillAndCheckTurnEnded(killerUserId, killedUserId){
         //add points to attacker
         this.addPoints(killerUserId, 1)
         //change status
         this.changePlayerStatus(killedUserId, 0)
+        let alivePlayers = 0
+        for (let i=0; i<this.players.length; i++){
+            if (this.players[i].status !== 0) alivePlayers ++
+            }
+        if (alivePlayers <= 1) {
+            this.endTurn()
+            return true
+        }
+        return false
+    }
+
+    endTurn(){
+        this.status += .5
+    }
+
+    startTurn(){
+        this.status += .5
+        this.from = this.to
+        this.to = this.from
     }
 
     async saveToDb(){
@@ -227,7 +240,8 @@ class ActiveGames{
             reloadingVelocity: this.reloadingVelocity,
             bulletVelocity: this.bulletVelocity,
             createdAt: this.createdAt,
-            players: this.players
+            players: this.players,
+            timer: this.timer
         }
         await GameModel.replaceOne({id: this.id}, d, {upsert: true})
     }

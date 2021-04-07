@@ -188,7 +188,10 @@ io.on('connection', socket => {
     if (status === 0){
       let killedByLocalId = data["killedBy"]
       let killer = game.getPlayerByLocalId(killedByLocalId)
-      game.addKill(killer.id, user.userId)
+      let turnEnded = game.addKillAndCheckTurnEnded(killer.id, user.userId)
+      if (turnEnded){
+
+      }
     }else{
       game.changePlayerStatus(user.userId, status)
     }
