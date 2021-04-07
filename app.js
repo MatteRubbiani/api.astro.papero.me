@@ -184,7 +184,8 @@ io.on('connection', socket => {
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
-    let status = data["status"]
+    let status = data["state"]
+    console.log(data)
     if (status === 0){
       let killedByLocalId = data["killedBy"]
       let killer = game.getPlayerByLocalId(killedByLocalId)
