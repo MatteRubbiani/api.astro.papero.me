@@ -209,10 +209,10 @@ class ActiveGames{
 
     startTurn(){
         this.status += .5
-        this.from = this.to
-        this.to = this.from
         for (let i=0; i<this.players.length; i++){
             this.players[i].status = 2
+            this.players[i].from = this.players[i].to
+            this.players[i].to = this.players[i].from
         }
     }
 
