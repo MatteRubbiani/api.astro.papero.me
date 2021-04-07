@@ -76,7 +76,8 @@ class ActiveGames{
             g = {
                 players: players,
                 timer: this.timer,
-                turn: parseInt(this.status)
+                turn: parseInt(this.status),
+                currentPlayer: this.getPlayerById(userId) ? this.getPlayerById(userId).localId : null,
             }
             return g
         }

@@ -15,7 +15,9 @@ Endpoints = {
     SHOOT: "shoot",
     CHANGE_STATE: "change-state",
     RELOAD: "reload",
-    READY: "ready"
+    READY: "ready",
+    END_TURN: "end-turn",
+    START_TURN: "start-turn"
 }
 
 module.exports = Endpoints
