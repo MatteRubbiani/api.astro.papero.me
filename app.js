@@ -178,8 +178,15 @@ io.on('connection', socket => {
     await game.saveToDb()
   })
 
-  socket.on
-
+  socket.on(Endpoints.START_TURN, async () => {
+    let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+    if (!user) return null
+    let game = await ActiveGames.getActiveGameById(user.gameId)
+    if (!game) return null
+    game.startTurn()
+    sendGameToPlayersInGame(game, Endpoints.START_TURN)
+    await game.saveToDb()
+  })
 
   socket.on(Endpoints.MOVE_BIG, data => {
     for (const [key, value] of Object.entries(socket.rooms)) {
