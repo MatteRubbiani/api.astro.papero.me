@@ -205,6 +205,7 @@ class ActiveGames{
 
     endTurn(){
         this.status += .5
+        this.timer = Date.now()
     }
 
     startTurn(){

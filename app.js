@@ -178,6 +178,8 @@ io.on('connection', socket => {
     await game.saveToDb()
   })
 
+  socket.on
+
 
   socket.on(Endpoints.MOVE_BIG, data => {
     for (const [key, value] of Object.entries(socket.rooms)) {

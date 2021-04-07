@@ -35,7 +35,7 @@ const GameSchema = new mongoose.Schema({
         default:[]
     },
     timer:{
-        type: Date,
+        type: Number,
         default: Date.now
     },
     createdAt:{
