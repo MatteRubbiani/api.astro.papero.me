@@ -210,11 +210,11 @@ class ActiveGames{
         this.status += .5
         this.from = this.to
         this.to = this.from
+        ActiveGames.readyPlayersForTurn[this.id] = []
     }
 
     playerReadyForTurn(userId){
         ActiveGames.readyPlayersForTurn[this.id].push(userId)
-
     }
 
     checkAllPlayersReady(){
