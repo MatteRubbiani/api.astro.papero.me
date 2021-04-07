@@ -102,7 +102,7 @@ class ActiveGames{
             id: activeUser.userId,
             sessionId: activeUser.sessionId,
             localId: Date.now(),
-            status: 0,
+            status: 2,
             color: this.getFirstAvailableColor(),
             points: 0,
             from: 0,
@@ -147,9 +147,6 @@ class ActiveGames{
 
     startGame(){
         this.status += 0.5
-        for (let i=0; i<this.players.length; i++){
-            this.players[i].status = 2
-        }
         ActiveGames.readyPlayersForTurn[this.id] = []
     }
 
@@ -274,7 +271,7 @@ class ActiveGames{
                     id: activeUser.userId,
                     sessionId: activeUser.sessionId,
                     localId: 0,
-                    status: 0,
+                    status: 2,
                     color: 0,
                     points: 0,
                     from: 0,
