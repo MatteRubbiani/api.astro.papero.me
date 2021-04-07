@@ -185,13 +185,11 @@ io.on('connection', socket => {
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
     let status = data["state"]
-    console.log(data)
     if (status === 0){
       let killedByLocalId = data["killedBy"]
       let killer = game.getPlayerByLocalId(killedByLocalId)
       let turnEnded = game.addKillAndCheckTurnEnded(killer.id, user.userId)
       if (turnEnded){
-        console.log("turn ended")
         sendGameToPlayersInGame(game, Endpoints.END_TURN)
       }
     }else{

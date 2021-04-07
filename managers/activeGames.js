@@ -148,7 +148,6 @@ class ActiveGames{
                     return "game_deleted"
                 }
                 if(this.players[i].id === this.adminUserId){
-                    console.log("is admin")
                     this.players.splice(i, 1)
                     this.adminUserId = this.players[0] ? this.players[0].id : this.players[1].id
                 }else{
@@ -163,7 +162,6 @@ class ActiveGames{
     startGame(){
         this.status += 0.5
         if (this.status === 1){
-            console.log("game started, seting player status to two")
             for (let i=0; i<this.players.length; i++){
                 this.players[i].status = 2
             }
