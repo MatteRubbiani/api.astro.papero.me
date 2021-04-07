@@ -202,7 +202,7 @@ class ActiveGames{
 
     endTurn(){
         this.status += .5
-        this.timer = Date.now()
+        this.timer = Date.now() + 10 * 1000
     }
 
     startTurn(){
