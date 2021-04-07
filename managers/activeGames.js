@@ -9,6 +9,8 @@ class ActiveGamePlayers{
         this.color = playerDict.color
         this.points = playerDict.points
         this.localId = playerDict.localId
+        this.from = playerDict.from
+        this.to = playerDict.to
     }
 }
 
