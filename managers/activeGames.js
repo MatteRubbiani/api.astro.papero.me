@@ -35,52 +35,34 @@ class ActiveGames{
     getGame(userId) {
         let players
         let g
-        if ((this.status * 10) % 10 === 0) { // è intero...
-            let settings = {
-                pointsToWin: this.totalTurns, //occhio è pointstowinn
-                velocity: this.velocity,
-                angularVelocity: this.angularVelocity,
-                reloadingVelocity: this.reloadingVelocity,
-                bulletVelocity: this.bulletVelocity
-            }
-            players = []
-            this.players.forEach(p => {
-                players.push(
-                    {
-                        state: p.status, //occhio è stateeee
-                        color: p.color,
-                        points: p.points,
-                        localId: p.localId
-                    }
-                )
-            })
-            g = {
-                status: this.status,
-                players: players,
-                admin: this.getPlayerById(this.adminUserId).localId,
-                currentPlayer: this.getPlayerById(userId) ? this.getPlayerById(userId).localId : null,
-                settings: settings
-            }
-            return g
+        let settings = {
+            pointsToWin: this.totalTurns, //occhio è pointstowinn
+            velocity: this.velocity,
+            angularVelocity: this.angularVelocity,
+            reloadingVelocity: this.reloadingVelocity,
+            bulletVelocity: this.bulletVelocity
         }
-        if ((this.status * 10) % 5 === 0){ //è ....,5
-            players = []
-            this.players.forEach(p => {
-                let d = {
+        players = []
+        this.players.forEach(p => {
+            players.push(
+                {
+                    state: p.status, //occhio è stateeee
+                    color: p.color,
+                    points: p.points,
+                    localId: p.localId,
                     from: p.from,
                     to: p.to,
-                    color: p.color
                 }
-                players.push(d)
-            })
-            g = {
-                players: players,
-                timer: this.timer,
-                turn: parseInt(this.status),
-                currentPlayer: this.getPlayerById(userId) ? this.getPlayerById(userId).localId : null,
-            }
-            return g
+            )
+        })
+        g = {
+            status: this.status,
+            players: players,
+            admin: this.getPlayerById(this.adminUserId).localId,
+            currentPlayer: this.getPlayerById(userId) ? this.getPlayerById(userId).localId : null,
+            settings: settings
         }
+        return g
 
     }
 
