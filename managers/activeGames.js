@@ -37,7 +37,7 @@ class ActiveGames{
         let g
         if ((this.status * 10) % 10 === 0) { // è intero...
             let settings = {
-                totalTurns: this.totalTurns,
+                pointsToWin: this.totalTurns, //occhio è pointstowinn
                 velocity: this.velocity,
                 angularVelocity: this.angularVelocity,
                 reloadingVelocity: this.reloadingVelocity,
