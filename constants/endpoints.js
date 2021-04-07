@@ -17,7 +17,8 @@ Endpoints = {
     RELOAD: "reload",
     READY: "ready",
     END_TURN: "end-turn",
-    START_TURN: "start-turn"
+    START_TURN: "start-turn",
+    READY_TURN: "ready-turn"
 }
 
 module.exports = Endpoints
