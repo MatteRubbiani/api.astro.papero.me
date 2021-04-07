@@ -165,6 +165,18 @@ io.on('connection', socket => {
     socket.emit(Endpoints.GAME_MODIFIED, game.getGame(user.userId))
   })
 
+  socket.on(Endpoints.READY_TURN, async () => {
+    let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
+    if (!user) return null
+    let game = await ActiveGames.getActiveGameById(user.gameId)
+    if (!game) return null
+    game.playerReadyForTurn(user.userId)
+    if (game.checkAllPlayersReady()){
+      sendGameToPlayersInGame(game, Endpoints.START_TURN)
+    }
+  })
+
+
   socket.on(Endpoints.MOVE_BIG, data => {
     for (const [key, value] of Object.entries(socket.rooms)) {
       socket.volatile.broadcast.to(socket.rooms[value]).emit(Endpoints.MOVE_BIG, data);

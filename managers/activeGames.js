@@ -16,6 +16,7 @@ class ActiveGamePlayers{
 
 class ActiveGames{
     static readyPlayers = []
+    static readyPlayersForTurn = {}
     constructor(gameDict) {
         this.id = gameDict.id
         this.adminUserId = gameDict.adminUserId
@@ -209,6 +210,18 @@ class ActiveGames{
         this.status += .5
         this.from = this.to
         this.to = this.from
+    }
+
+    playerReadyForTurn(userId){
+        ActiveGames.readyPlayersForTurn[this.id].push(userId)
+
+    }
+
+    checkAllPlayersReady(){
+        if (ActiveGames.readyPlayersForTurn[this.id].length >= this.players.length){
+            ActiveGames.readyPlayersForTurn[this.id] = []
+            return true
+        }
     }
 
     async saveToDb(){
