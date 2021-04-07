@@ -161,7 +161,8 @@ class ActiveGames{
     changePlayerStatus(userId, status){
         for (let i=0; i<this.players.length; i++){
             if (this.players[i].id === userId){
-                if (status === 0.5) ActiveGames.readyPlayers.push(userId) else this.players[i].status = status
+                if (status === 0.5) ActiveGames.readyPlayers.push(userId)
+                else this.players[i].status = status
             }
         }
     }
