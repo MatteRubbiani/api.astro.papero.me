@@ -157,6 +157,7 @@ io.on('connection', socket => {
   })
 
   socket.on(Endpoints.GAME_MODIFIED, async () => {
+    console.log("game modifeod")
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
