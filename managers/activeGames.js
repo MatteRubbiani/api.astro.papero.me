@@ -191,7 +191,7 @@ class ActiveGames{
         this.changePlayerStatus(killedUserId, 0)
         let alivePlayers = 0
         for (let i=0; i<this.players.length; i++){
-            if (this.players[i].status !== 0) alivePlayers ++
+            if (this.players[i].status <= 0) alivePlayers ++
             }
         if (alivePlayers <= 1) {
             this.endTurn()
