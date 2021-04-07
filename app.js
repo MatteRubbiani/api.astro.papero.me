@@ -174,6 +174,7 @@ io.on('connection', socket => {
     if (game.checkAllPlayersReady()){
       sendGameToPlayersInGame(game, Endpoints.START_TURN)
     }
+    await game.saveToDb()
   })
 
 
