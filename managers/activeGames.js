@@ -188,7 +188,7 @@ class ActiveGames{
 
     addKillAndCheckTurnEnded(killerUserId, killedUserId){
         console.log(this.status, ActiveGames.gamesStatus[this.id])
-        if ((ActiveGames.gamesStatus[this.id] * 10 % 10) !== 0) return null
+        if (!this.playing()) return null
         //add points to attacker
         this.addPoints(killerUserId, 1)
         //change status
@@ -202,6 +202,10 @@ class ActiveGames{
             return true
         }
         return false
+    }
+
+    playing(){
+        return ((ActiveGames.gamesStatus[this.id] * 10 % 10) === 0)
     }
 
     endTurn(){
@@ -225,6 +229,7 @@ class ActiveGames{
     }
 
     checkAllPlayersReady(){
+        if (this.playing()) return null
         if (ActiveGames.readyPlayersForTurn[this.id].length >= this.players.length){
             ActiveGames.readyPlayersForTurn[this.id] = []
             return true
