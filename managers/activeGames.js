@@ -17,6 +17,7 @@ class ActiveGamePlayers{
 class ActiveGames{
     static readyPlayers = []
     static readyPlayersForTurn = {}
+    static gamesStatus = {}
     constructor(gameDict) {
         this.id = gameDict.id
         this.adminUserId = gameDict.adminUserId
@@ -146,6 +147,7 @@ class ActiveGames{
     }
 
     startGame(){
+        ActiveGames.gamesStatus[this.id] += .5
         this.status += 0.5
         ActiveGames.readyPlayersForTurn[this.id] = []
     }
@@ -185,6 +187,7 @@ class ActiveGames{
     }
 
     addKillAndCheckTurnEnded(killerUserId, killedUserId){
+        if (ActiveGames.gamesStatus[this.id] * 10 % 10 !== 0) return null
         //add points to attacker
         this.addPoints(killerUserId, 1)
         //change status
@@ -201,11 +204,13 @@ class ActiveGames{
     }
 
     endTurn(){
+        ActiveGames.gamesStatus[this.id] += .5
         this.status += .5
         this.timer = Date.now() + 10 * 1000
     }
 
     startTurn(){
+        ActiveGames.gamesStatus[this.id] += .5
         this.status += .5
         for (let i=0; i<this.players.length; i++){
             this.players[i].status = 2
@@ -279,6 +284,7 @@ class ActiveGames{
                 }
             ]
         }
+        ActiveGames.gamesStatus[this.id] = 0
         let g = await new ActiveGames(dict)
         return g
     }

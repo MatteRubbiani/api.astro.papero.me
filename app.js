@@ -154,7 +154,6 @@ io.on('connection', socket => {
       }
     }
     await game.saveToDb()
-    //add kill...
   })
 
   socket.on(Endpoints.GAME_MODIFIED, async () => {
