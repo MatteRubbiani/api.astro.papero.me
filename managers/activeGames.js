@@ -187,7 +187,7 @@ class ActiveGames{
     }
 
     addKillAndCheckTurnEnded(killerUserId, killedUserId){
-        console.log(this.status)
+        console.log(this.status, ActiveGames.gamesStatus[this.id])
         if ((ActiveGames.gamesStatus[this.id] * 10 % 10) !== 0) return null
         //add points to attacker
         this.addPoints(killerUserId, 1)
