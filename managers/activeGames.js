@@ -211,10 +211,11 @@ class ActiveGames{
     }
 
     endTurn(){
+        console.log("ending turn")
         ActiveGames.gamesStatus[this.id] += .5
         this.status += .5
         //check if game has ended
-        if (this.ended){
+        if (this.gameEnded()){
             this.timer = Infinity
         }else{
             this.timer = Date.now() + 10 * 1000
@@ -253,6 +254,7 @@ class ActiveGames{
     }
 
     restart(){
+        console.log("restarting match")
         this.status = 0
     }
 
