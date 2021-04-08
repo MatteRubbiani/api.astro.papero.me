@@ -215,7 +215,7 @@ class ActiveGames{
         this.status += .5
         //check if game has ended
         if (this.ended){
-            this.timer = Date.now() * 2
+            this.timer = Infinity
         }else{
             this.timer = Date.now() + 10 * 1000
         }
