@@ -215,6 +215,7 @@ io.on('connection', socket => {
       let turnEnded = game.addKillAndCheckTurnEnded(killer.id, user.userId)
       if (turnEnded){
         sendGameToPlayersInGame(game, Endpoints.END_TURN)
+        if (game.gameEnded()) game.restart()
       }
     }else{
       game.changePlayerStatus(user.userId, status)

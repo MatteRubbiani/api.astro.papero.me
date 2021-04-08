@@ -161,6 +161,7 @@ class ActiveGames{
     }
 
     changePlayerStatus(userId, status){
+        if (this.status === 0) return null
         for (let i=0; i<this.players.length; i++){
             if (this.players[i].id === userId){
                 if (status === 0.5) ActiveGames.readyPlayers.push(userId)
@@ -201,6 +202,7 @@ class ActiveGames{
             this.endTurn()
             return true
         }
+
         return false
     }
 
@@ -211,7 +213,21 @@ class ActiveGames{
     endTurn(){
         ActiveGames.gamesStatus[this.id] += .5
         this.status += .5
-        this.timer = Date.now() + 10 * 1000
+        //check if game has ended
+        if (this.ended){
+            this.timer = Date.now() * 2
+        }else{
+            this.timer = Date.now() + 10 * 1000
+        }
+
+    }
+
+    gameEnded(){
+        let ended = false
+        for (let i=0; i<this.players.length; i++){
+            if (this.players[i].points >= this.totalTurns) ended = true
+        }
+        return ended
     }
 
     startTurn(){
@@ -234,6 +250,10 @@ class ActiveGames{
             ActiveGames.readyPlayersForTurn[this.id] = []
             return true
         }
+    }
+
+    restart(){
+        this.status = 0
     }
 
     async saveToDb(){
