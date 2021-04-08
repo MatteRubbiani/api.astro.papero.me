@@ -285,8 +285,7 @@ class ActiveGames{
                 }
             ]
         }
-        ActiveGames.gamesStatus[this.id] = 0
-        console.log(ActiveGames.gamesStatus)
+        ActiveGames.gamesStatus[gameId] = 0
         console.log("status set")
         let g = await new ActiveGames(dict)
         return g
