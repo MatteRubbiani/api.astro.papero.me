@@ -268,6 +268,7 @@ function sendToPlayersInGame(game, data, endpoint, exclude=null){
 }
 
 function sendGameToPlayersInGame(game, endpoint, exclude=null) {
+  console.log(endpoint, " ")
   let gameUsers = game.players
   for (let i = 0; i < gameUsers.length; i++) {
     let player = gameUsers[i]
