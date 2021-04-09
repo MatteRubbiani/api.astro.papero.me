@@ -32,6 +32,7 @@ io.on('connection', socket => {
       game = await ActiveGames.createActiveGame(user, gameId)
       await game.saveToDb()
     }
+    console.log("connection")
     socket.emit(Endpoints.STATUS, game.status)
     switch (game.status){
       case 0:
