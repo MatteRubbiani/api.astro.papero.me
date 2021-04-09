@@ -188,7 +188,6 @@ class ActiveGames{
     }
 
     addKillAndCheckTurnEnded(killerUserId, killedUserId){
-        console.log(this.status, ActiveGames.gamesStatus[this.id])
         if (!this.playing()) return null
         //add points to attacker
         this.addPoints(killerUserId, 1)
@@ -211,7 +210,6 @@ class ActiveGames{
     }
 
     endTurn(){
-        console.log("ending turn")
         ActiveGames.gamesStatus[this.id] += .5
         this.status += .5
         //check if game has ended
@@ -224,12 +222,10 @@ class ActiveGames{
     }
 
     gameEnded(){
-        console.log("checking game ended")
         let ended = false
         for (let i=0; i<this.players.length; i++){
             if (this.players[i].to >= this.totalTurns) ended = true
         }
-        console.log(ended)
         return ended
     }
 
@@ -261,6 +257,7 @@ class ActiveGames{
         console.log("restarting match")
         this.status = 0
         this.timer = Date.now()
+        ActiveGames.gamesStatus[this.id] = 0
         for (let i=0; i<this.players.length; i++){
             this.players[i].from = 0
             this.players[i].to = 0
