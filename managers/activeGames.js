@@ -190,7 +190,7 @@ class ActiveGames{
     addKillAndCheckTurnEnded(killerUserId, killedUserId){
         if (!this.playing()) return null
         //add points to attacker
-        this.addPoints(killerUserId, 1)
+        if (killerUserId)this.addPoints(killerUserId, 1)
         //change status
         this.changePlayerStatus(killedUserId, 0)
         let alivePlayers = 0

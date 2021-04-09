@@ -248,6 +248,11 @@ io.on('connection', socket => {
           state: 0
         }
         sendToPlayersInGame(game, data, Endpoints.CHANGE_STATE)
+        let turnEnded = game.addKillAndCheckTurnEnded(null, user.userId)
+        if (turnEnded){
+            sendGameToPlayersInGame(game, Endpoints.END_TURN)
+            if (game.gameEnded()) game.restart()
+        }
         await game.saveToDb()
     }
   })
