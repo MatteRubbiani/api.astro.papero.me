@@ -213,7 +213,7 @@ class ActiveGames{
         ActiveGames.gamesStatus[this.id] += .5
         this.status += .5
         for (let i=0; i<this.players.length; i++){
-            this.players[i].from = this.players[i].to
+
             this.players[i].to = this.players[i].from
         }
         //check if game has ended
@@ -239,6 +239,7 @@ class ActiveGames{
         this.status += .5
         for (let i=0; i<this.players.length; i++){
             this.players[i].status = 2
+            this.players[i].from = this.players[i].to
         }
         return true
     }
