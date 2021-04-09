@@ -242,6 +242,7 @@ class ActiveGames{
             this.players[i].from = this.players[i].to
             this.players[i].to = this.players[i].from
         }
+        return true
     }
 
     playerReadyForTurn(userId){
