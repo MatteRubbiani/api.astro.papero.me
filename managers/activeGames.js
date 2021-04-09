@@ -190,7 +190,7 @@ class ActiveGames{
     addKillAndCheckTurnEnded(killerUserId, killedUserId){
         if (!this.playing()) return null
         //add points to attacker
-        if (killerUserId)this.addPoints(killerUserId, 1)
+        if (killerUserId) this.addPoints(killerUserId, 1)
         //change status
         this.changePlayerStatus(killedUserId, 0)
         let alivePlayers = 0
@@ -213,8 +213,6 @@ class ActiveGames{
         ActiveGames.gamesStatus[this.id] += .5
         this.status += .5
         for (let i=0; i<this.players.length; i++){
-
-            this.players[i].to = this.players[i].from
         }
         //check if game has ended
         if (this.gameEnded()){
@@ -240,6 +238,7 @@ class ActiveGames{
         for (let i=0; i<this.players.length; i++){
             this.players[i].status = 2
             this.players[i].from = this.players[i].to
+            this.players[i].to = this.players[i].from
         }
         return true
     }
