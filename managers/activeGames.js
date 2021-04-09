@@ -260,6 +260,7 @@ class ActiveGames{
     restart(){
         console.log("restarting match")
         this.status = 0
+        this.timer = Date.now()
         for (let i=0; i<this.players.length; i++){
             this.players[i].from = 0
             this.players[i].to = 0
