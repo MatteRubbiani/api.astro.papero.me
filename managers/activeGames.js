@@ -234,6 +234,7 @@ class ActiveGames{
     }
 
     startTurn(){
+        if (this.status === 0) return null
         ActiveGames.gamesStatus[this.id] += .5
         this.status += .5
         for (let i=0; i<this.players.length; i++){
