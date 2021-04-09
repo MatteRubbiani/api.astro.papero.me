@@ -227,7 +227,7 @@ class ActiveGames{
         console.log("checking game ended")
         let ended = false
         for (let i=0; i<this.players.length; i++){
-            if (this.players[i].points >= this.totalTurns) ended = true
+            if (this.players[i].to >= this.totalTurns) ended = true
         }
         console.log(ended)
         return ended
