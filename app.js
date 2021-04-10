@@ -230,7 +230,7 @@ io.on('connection', socket => {
 
   socket.on(Endpoints.POWER_UP, data => {
     for (const [key, value] of Object.entries(socket.rooms)) {
-      socket.volatile.broadcast.to(socket.rooms[value]).emit(Endpoints.RELOAD, data);
+      socket.volatile.broadcast.to(socket.rooms[value]).emit(Endpoints.POWER_UP, data);
     }
   })
 
