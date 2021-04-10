@@ -275,6 +275,7 @@ class ActiveGames{
             id: this.id,
             adminUserId: this.adminUserId,
             status: this.status,
+            map: this.map,
             totalTurns: this.totalTurns,
             velocity: this.velocity,
             angularVelocity: this.angularVelocity,
