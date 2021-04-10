@@ -61,6 +61,7 @@ class ActiveGames{
         })
         g = {
             status: this.status,
+            map: this.map,
             players: players,
             admin: this.getPlayerById(this.adminUserId).localId,
             currentPlayer: this.getPlayerById(userId) ? this.getPlayerById(userId).localId : null,
