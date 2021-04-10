@@ -228,6 +228,12 @@ io.on('connection', socket => {
     }
   })
 
+  socket.on(Endpoints.POWER_UP, data => {
+    for (const [key, value] of Object.entries(socket.rooms)) {
+      socket.volatile.broadcast.to(socket.rooms[value]).emit(Endpoints.RELOAD, data);
+    }
+  })
+
   socket.on("disconnect", async () => {
     let user = await ActiveUsersManager.findActiveUserBySessionId(socket.id)
     if (!user) return null
