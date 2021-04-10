@@ -22,6 +22,7 @@ class ActiveGames{
         this.id = gameDict.id
         this.adminUserId = gameDict.adminUserId
         this.status = gameDict.status
+        this.map = gameDict.map
         this.totalTurns = gameDict.totalTurns
         this.velocity = gameDict.velocity
         this.angularVelocity = gameDict.angularVelocity
