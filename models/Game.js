@@ -15,6 +15,9 @@ const GameSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    map: {
+        type: Number,
+    },
     totalTurns: {
         type: Number,
     },

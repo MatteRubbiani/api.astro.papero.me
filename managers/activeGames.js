@@ -212,6 +212,7 @@ class ActiveGames{
     endTurn(){
         ActiveGames.gamesStatus[this.id] += .5
         this.status += .5
+        this.map = Math.floor(Math.random() * 4);
         for (let i=0; i<this.players.length; i++){
         }
         //check if game has ended
@@ -301,6 +302,7 @@ class ActiveGames{
         const dict = {
             id : gameId,
             status : 0,
+            map: Math.floor(Math.random() * 4),
             numberOfTurns: gameConfig.defaultTurns,
             adminUserId: activeUser.userId,
             totalTurns: gameConfig.totalTurns,
