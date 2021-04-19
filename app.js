@@ -38,7 +38,8 @@ io.on('connection', socket => {
       socket.emit(Endpoints.LOBBY_MODIFIED, game.getGame(userId));
     }else {
       console.log("user is trying to reconnect")
-      for (let i=0; i>game.players.lenght; i++){
+      for (let i=0; i<game.players.lenght; i++){
+
         if (game.players[i].id === userId){
           console.log("user was found")
           game.players[i].sessionId = socket.id
