@@ -174,12 +174,10 @@ io.on('connection', socket => {
     if (!game) return null
     console.log("ready turn ")
     game.playerReadyForTurn(user.userId)
+    await game.saveToDb()
     if (game.checkAllPlayersReady()){
       if (game.startTurn()){
-        await game.saveToDb()
-        const delay = ms => new Promise(res => setTimeout(res, ms));
-        await delay(3000);
-        game = await ActiveGames.getActiveGameById(user.gameId)
+
         sendGameToPlayersInGame(game, Endpoints.START_TURN)
       }
     }

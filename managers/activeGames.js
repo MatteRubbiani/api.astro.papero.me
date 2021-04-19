@@ -258,6 +258,10 @@ class ActiveGames{
     checkAllPlayersReady(){
         if (this.playing()) return null
         if (ActiveGames.readyPlayersForTurn[this.id].length >= this.players.length){
+            for (let i=0; i<ActiveGames.readyPlayersForTurn[this.id].length; i++){
+                let p = ActiveGames.readyPlayersForTurn[this.id][i]
+                this.changePlayerStatus(p, 2)
+            }
             ActiveGames.readyPlayersForTurn[this.id] = []
             return true
         }
