@@ -36,10 +36,16 @@ io.on('connection', socket => {
     socket.emit(Endpoints.STATUS, game.status)
     if (game.status === 0) {
       socket.emit(Endpoints.LOBBY_MODIFIED, game.getGame(userId));
-    }else if (game.status * 10 % 10 === 0) { //playing
-
-    }else { //classifica
-      game.changePlayerStatus(user.userId, 2)
+    }else {
+      for (let i=0; i>game.players.lenght; i++){
+        if (game.players[i].id === userId){
+          game.players[i].sessionId = socket.id
+        }
+      }
+      if (game.status * 10 % 10 === 0) { //playing
+      }else { //classifica
+        game.changePlayerStatus(user.userId, 2)
+      }
       await game.saveToDb()
     }
   })
