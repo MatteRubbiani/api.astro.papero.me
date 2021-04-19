@@ -172,6 +172,7 @@ io.on('connection', socket => {
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
+    console.log("ready turn ")
     game.playerReadyForTurn(user.userId)
     if (game.checkAllPlayersReady()){
       if (game.startTurn()) sendGameToPlayersInGame(game, Endpoints.START_TURN)
@@ -184,6 +185,7 @@ io.on('connection', socket => {
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
+    console.log("start turn endpoint")
     if (game.playing()) return null
     if (game.startTurn()) sendGameToPlayersInGame(game, Endpoints.START_TURN)
     await game.saveToDb()
