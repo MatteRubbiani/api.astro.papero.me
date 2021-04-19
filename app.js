@@ -175,9 +175,12 @@ io.on('connection', socket => {
     console.log("ready turn ")
     game.playerReadyForTurn(user.userId)
     if (game.checkAllPlayersReady()){
-      if (game.startTurn()) sendGameToPlayersInGame(game, Endpoints.START_TURN)
+      if (game.startTurn()){
+        await game.saveToDb()
+        game = await ActiveGames.getActiveGameById(user.gameId)
+        sendGameToPlayersInGame(game, Endpoints.START_TURN)
+      }
     }
-    await game.saveToDb()
   })
 
   socket.on(Endpoints.START_TURN, async () => {
