@@ -216,6 +216,7 @@ class ActiveGames{
         this.status += .5
         this.map = Math.floor(Math.random() * 4);
         for (let i=0; i<this.players.length; i++){
+            this.players[i].status = 2
         }
         //check if game has ended
         if (this.gameEnded()){
@@ -239,7 +240,6 @@ class ActiveGames{
         ActiveGames.gamesStatus[this.id] += .5
         this.status += .5
         for (let i=0; i<this.players.length; i++){
-            this.players[i].status = 2
             this.players[i].from = this.players[i].to
             this.players[i].to = this.players[i].from
         }

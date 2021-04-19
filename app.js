@@ -34,11 +34,13 @@ io.on('connection', socket => {
     }
     console.log("connection")
     socket.emit(Endpoints.STATUS, game.status)
-    switch (game.status){
-      case 0:
-        socket.emit(Endpoints.LOBBY_MODIFIED, game.getGame(userId));
-      case 1:
-        //socket.emit(Endpoints.GAME_MODIFIED, game.getGame(userId))
+    if (game.status === 0) {
+      socket.emit(Endpoints.LOBBY_MODIFIED, game.getGame(userId));
+    }else if (game.status * 10 % 10 === 0) { //playing
+
+    }else { //classifica
+      game.changePlayerStatus(user.userId, 2)
+      await game.saveToDb()
     }
   })
 
@@ -248,7 +250,7 @@ io.on('connection', socket => {
         await game.saveToDb()
       }
       sendLobbyChangedToPlayers(game)
-    }else{
+    }else if(game.status * 10 % 10 === 0){ //playing
         game.changePlayerStatus(user.userId, 0)
         let data = {
           localId: game.getPlayerById(user.userId).localId,
@@ -261,6 +263,12 @@ io.on('connection', socket => {
             if (game.gameEnded()) game.restart()
         }
         await game.saveToDb()
+    }else{ //classifica
+      game.playerReadyForTurn(user.userId)
+      if (game.checkAllPlayersReady()){
+        if (game.startTurn()) sendGameToPlayersInGame(game, Endpoints.START_TURN)
+      }
+      await game.saveToDb()
     }
   })
 })
