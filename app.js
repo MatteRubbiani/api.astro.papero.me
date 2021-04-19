@@ -39,7 +39,7 @@ io.on('connection', socket => {
     }else {
       console.log("user is trying to reconnect")
       console.log(game)
-      for (let i=0; i<game.players.lenght; i++){
+      for (let i=0; i<game.players.length; i++){
         console.log("uer id: ", userId, " user found : ", i)
         if (game.players[i].id === userId){
           console.log("user was found")
