@@ -32,17 +32,12 @@ io.on('connection', socket => {
       game = await ActiveGames.createActiveGame(user, gameId)
       await game.saveToDb()
     }
-    console.log("connection")
     socket.emit(Endpoints.STATUS, game.status)
     if (game.status === 0) {
       socket.emit(Endpoints.LOBBY_MODIFIED, game.getGame(userId));
     }else {
-      console.log("user is trying to reconnect")
-      console.log(game)
       for (let i=0; i<game.players.length; i++){
-        console.log("uer id: ", userId, " user found : ", i)
         if (game.players[i].id === userId){
-          console.log("user was found")
           game.players[i].sessionId = socket.id
         }
       }
@@ -182,7 +177,6 @@ io.on('connection', socket => {
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
-    console.log("ready turn ")
     game.playerReadyForTurn(user.userId)
     if (game.checkAllPlayersReady()){
       if (game.startTurn()){
@@ -198,7 +192,6 @@ io.on('connection', socket => {
     if (!user) return null
     let game = await ActiveGames.getActiveGameById(user.gameId)
     if (!game) return null
-    console.log("start turn endpoint")
     if (game.playing()) return null
     if (game.startTurn()) sendGameToPlayersInGame(game, Endpoints.START_TURN)
     await game.saveToDb()
@@ -302,15 +295,12 @@ function sendToPlayersInGame(game, data, endpoint, exclude=null){
 }
 
 function sendGameToPlayersInGame(game, endpoint, exclude=null) {
-  console.log(endpoint, " ")
   let gameUsers = game.players
-  console.log(gameUsers)
   for (let i = 0; i < gameUsers.length; i++) {
     let player = gameUsers[i]
     if (player.id !== exclude) {
       let s = io.sockets.connected[player.sessionId]
       if (s) {
-        console.log("emitting to user: ", player.localId)
         s.emit(endpoint, game.getGame(player.id))
       }
     }
